@@ -11,6 +11,7 @@ class ViewController: UIViewController {
 
 	override func loadView() {
 		self.view = MainView()
+		
 	}
 	
 	override func viewDidLoad() {
@@ -18,6 +19,9 @@ class ViewController: UIViewController {
 		// Do any additional setup after loading the view.
 	}
 
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		return .darkContent
+	}
 
 }
 
