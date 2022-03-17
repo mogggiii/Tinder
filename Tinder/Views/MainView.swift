@@ -10,15 +10,13 @@ import UIKit
 class MainView: UIView {
 	
 	// MARK: - UIElements
-	
-	// top and bottom stackViews
 	lazy var topStackView = TopNavigationStackView()
 	lazy var bottomStackView = HomeBottomsStackView()
 	
-	lazy var yellowView: UIView = {
+	lazy var cardDeckView: UIView = {
 		let view = UIView()
-		view.backgroundColor = .yellow
-		view.translatesAutoresizingMaskIntoConstraints = false
+		view.layer.cornerRadius = 10
+		view.clipsToBounds = true 
 		return view
 	}()
 	
@@ -28,6 +26,7 @@ class MainView: UIView {
 		
 		self.backgroundColor = .white
 		configureUI()
+		setupDummyCards()
 	}
 	
 	required init?(coder: NSCoder) {
@@ -36,10 +35,10 @@ class MainView: UIView {
 	
 	// MARK: - Fileprivate methods
 	fileprivate func configureUI() {
-		let overallStackView = UIStackView(arrangedSubviews: [topStackView, yellowView, bottomStackView])
+		let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardDeckView, bottomStackView])
 		overallStackView.axis = .vertical
 		overallStackView.translatesAutoresizingMaskIntoConstraints = false
-		self.addSubview(overallStackView)
+		addSubview(overallStackView)
 		
 		NSLayoutConstraint.activate([
 			overallStackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
@@ -47,6 +46,17 @@ class MainView: UIView {
 			overallStackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
 			overallStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),		
 		])
+		
+		overallStackView.isLayoutMarginsRelativeArrangement = true
+		overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
+		overallStackView.bringSubviewToFront(cardDeckView)
+	}
+	
+	fileprivate func setupDummyCards() {
+		let cardView = CardView(frame: .zero)
+		cardDeckView.addSubview(cardView)
+
+		cardView.fillSuperview()
 	}
 	
 }
