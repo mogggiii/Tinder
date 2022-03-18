@@ -16,7 +16,6 @@ class MainView: UIView {
 	lazy var cardDeckView: UIView = {
 		let view = UIView()
 		view.layer.cornerRadius = 10
-		view.clipsToBounds = true 
 		return view
 	}()
 	

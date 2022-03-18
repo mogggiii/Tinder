@@ -11,6 +11,9 @@ class CardView: UIView {
 	
 	fileprivate let imageView = UIImageView(image: UIImage(named: "ladies"))
 	
+	// Configurations
+	fileprivate let threshold: CGFloat = 80
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		
@@ -24,6 +27,7 @@ class CardView: UIView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	// MARK: - Fileprivate methods 
 	fileprivate func configureCardView() {
 		layer.cornerRadius = 10
 		clipsToBounds = true
@@ -37,25 +41,42 @@ class CardView: UIView {
 		case .changed:
 			handleChanged(gesture)
 		case .ended:
-			handleEnded()
+			handleEnded(gesture: gesture)
 		@unknown default:
 			()
 		}
 	}
 	
-	fileprivate func handleEnded() {
-		UIView.animate(withDuration: 0.7,
+	fileprivate func handleEnded(gesture: UIPanGestureRecognizer) {
+		let translationDirection: CGFloat = gesture.translation(in: nil).x > 0 ? 1 : -1
+		let shouldDismissCard = abs(gesture.translation(in: nil).x) > threshold
+		
+		UIView.animate(withDuration: 0.75,
 									 delay: 0,
 									 usingSpringWithDamping: 0.6,
 									 initialSpringVelocity: 0.1,
 									 options: .curveEaseOut,
 									 animations: {
+			if shouldDismissCard {
+				let offScreenTransform = self.transform.translatedBy(x: 1000 * translationDirection, y: 0)
+				self.transform = offScreenTransform
+			} else {
+				self.transform = .identity
+			}
+		}) { (_) in
+			print("Completed animation")
 			self.transform = .identity
-		}, completion: nil)
+		}
 	}
 	
 	fileprivate func handleChanged(_ gesture: UIPanGestureRecognizer) {
 		let translation = gesture.translation(in: nil)
-		self.transform = CGAffineTransform(translationX: translation.x, y: translation.y)
+		// Rotation
+		let degrees: CGFloat = translation.x / 20
+		let angle = degrees * .pi / 180
+		
+		let rotationTransfor = CGAffineTransform(rotationAngle: angle)
+		self.transform = rotationTransfor.translatedBy(x: translation.x, y: translation.y)
+		
 	}
 }
