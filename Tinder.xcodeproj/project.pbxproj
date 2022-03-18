@@ -9,31 +9,31 @@
 /* Begin PBXBuildFile section */
 		CE0104C027E1E74600C79BD6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0104BF27E1E74600C79BD6 /* AppDelegate.swift */; };
 		CE0104C227E1E74600C79BD6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0104C127E1E74600C79BD6 /* SceneDelegate.swift */; };
-		CE0104C427E1E74600C79BD6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0104C327E1E74600C79BD6 /* ViewController.swift */; };
+		CE0104C427E1E74600C79BD6 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0104C327E1E74600C79BD6 /* HomeController.swift */; };
 		CE0104C927E1E74C00C79BD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0104C827E1E74C00C79BD6 /* Assets.xcassets */; };
 		CE0104CC27E1E74C00C79BD6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0104CA27E1E74C00C79BD6 /* LaunchScreen.storyboard */; };
-		CE6E273827E1E7C100AD1C73 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E273727E1E7C100AD1C73 /* MainView.swift */; };
 		CE6E273A27E1F4F400AD1C73 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E273927E1F4F400AD1C73 /* UIColor + Extension.swift */; };
 		CE6E273E27E348C300AD1C73 /* HomeBottomsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E273D27E348C300AD1C73 /* HomeBottomsStackView.swift */; };
 		CE6E274027E34FAA00AD1C73 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E273F27E34FAA00AD1C73 /* TopNavigationStackView.swift */; };
 		CE6E274327E3647200AD1C73 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E274227E3647200AD1C73 /* CardView.swift */; };
 		CE6E274527E372F500AD1C73 /* Extensions+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E274427E372F400AD1C73 /* Extensions+UIView.swift */; };
+		CEC86E6727E4A97700C72C6E /* User .swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC86E6627E4A97700C72C6E /* User .swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CE0104BC27E1E74600C79BD6 /* Tinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0104BF27E1E74600C79BD6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE0104C127E1E74600C79BD6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CE0104C327E1E74600C79BD6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CE0104C327E1E74600C79BD6 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		CE0104C827E1E74C00C79BD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0104CB27E1E74C00C79BD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0104CD27E1E74C00C79BD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CE6E273727E1E7C100AD1C73 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		CE6E273927E1F4F400AD1C73 /* UIColor + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		CE6E273D27E348C300AD1C73 /* HomeBottomsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomsStackView.swift; sourceTree = "<group>"; };
 		CE6E273F27E34FAA00AD1C73 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		CE6E274227E3647200AD1C73 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		CE6E274427E372F400AD1C73 /* Extensions+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+UIView.swift"; sourceTree = "<group>"; };
+		CEC86E6627E4A97700C72C6E /* User .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User .swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,10 +66,11 @@
 		CE0104BE27E1E74600C79BD6 /* Tinder */ = {
 			isa = PBXGroup;
 			children = (
+				CEC86E6527E4A95800C72C6E /* Model  */,
 				CE6E274127E3579300AD1C73 /* SupportingFiles */,
 				CE6E273C27E3489B00AD1C73 /* Extensions */,
 				CE6E273B27E3488A00AD1C73 /* Views */,
-				CE0104C327E1E74600C79BD6 /* ViewController.swift */,
+				CE0104C327E1E74600C79BD6 /* HomeController.swift */,
 				CE0104CA27E1E74C00C79BD6 /* LaunchScreen.storyboard */,
 				CE0104CD27E1E74C00C79BD6 /* Info.plist */,
 			);
@@ -79,7 +80,6 @@
 		CE6E273B27E3488A00AD1C73 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CE6E273727E1E7C100AD1C73 /* MainView.swift */,
 				CE6E273D27E348C300AD1C73 /* HomeBottomsStackView.swift */,
 				CE6E273F27E34FAA00AD1C73 /* TopNavigationStackView.swift */,
 				CE6E274227E3647200AD1C73 /* CardView.swift */,
@@ -104,6 +104,14 @@
 				CE0104C127E1E74600C79BD6 /* SceneDelegate.swift */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		CEC86E6527E4A95800C72C6E /* Model  */ = {
+			isa = PBXGroup;
+			children = (
+				CEC86E6627E4A97700C72C6E /* User .swift */,
+			);
+			path = "Model ";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,13 +184,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE0104C427E1E74600C79BD6 /* ViewController.swift in Sources */,
+				CE0104C427E1E74600C79BD6 /* HomeController.swift in Sources */,
 				CE6E273E27E348C300AD1C73 /* HomeBottomsStackView.swift in Sources */,
 				CE6E274527E372F500AD1C73 /* Extensions+UIView.swift in Sources */,
-				CE6E273827E1E7C100AD1C73 /* MainView.swift in Sources */,
 				CE6E274027E34FAA00AD1C73 /* TopNavigationStackView.swift in Sources */,
 				CE0104C027E1E74600C79BD6 /* AppDelegate.swift in Sources */,
 				CE0104C227E1E74600C79BD6 /* SceneDelegate.swift in Sources */,
+				CEC86E6727E4A97700C72C6E /* User .swift in Sources */,
 				CE6E274327E3647200AD1C73 /* CardView.swift in Sources */,
 				CE6E273A27E1F4F400AD1C73 /* UIColor + Extension.swift in Sources */,
 			);
