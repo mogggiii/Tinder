@@ -9,22 +9,8 @@ import UIKit
 
 class CardView: UIView {
 	
-	// MARK: - User
-	var user: User? {
-		didSet {
-			guard let user = user else { return }
-			
-			let attributedText = NSMutableAttributedString(string: user.name, attributes: [.font: UIFont.systemFont(ofSize: 30, weight: .bold)])
-			attributedText.append(NSAttributedString(string: "  \(user.age)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))
-			attributedText.append(NSAttributedString(string: "\n\(user.profession)", attributes: [.font: UIFont.systemFont(ofSize: 18, weight: .regular)]))
-			
-			imageView.image = UIImage(named: user.imageName)
-			informationLabel.attributedText = attributedText
-		}
-	}
-	
 	// MARK: - UIElements
-	fileprivate let imageView = UIImageView(image: UIImage(named: "ladies"))
+  let imageView = UIImageView(image: UIImage(named: "ladies"))
 	
 	lazy var informationLabel: UILabel = {
 		let label = UILabel()

@@ -18,9 +18,9 @@ class HomeController: UIViewController {
 		return view
 	}()
 	
-	let users = [
-		User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "ladies"),
-		User(name: "Jane", age: 18, profession: "Teacher", imageName: "like"),
+	let cardViewModel = [
+		User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "ladies").toCardViewModel(),
+		User(name: "Jane", age: 18, profession: "Teacher", imageName: "like").toCardViewModel()
 	]
 
 	// MARK: - View Lifecycle
@@ -57,9 +57,11 @@ class HomeController: UIViewController {
 	}
 	
 	fileprivate func setupDummyCards() {
-		users.forEach { user in
+		cardViewModel.forEach { cardVM in
 			let cardView = CardView(frame: .zero)
-			cardView.user = user
+			cardView.imageView.image = UIImage(named: cardVM.imageName)
+			cardView.informationLabel.attributedText = cardVM.attributedString
+			cardView.informationLabel.textAlignment = cardVM.textAlignment
 			cardDeckView.addSubview(cardView)
 			cardView.fillSuperview()
 		}
