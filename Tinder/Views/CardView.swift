@@ -9,10 +9,17 @@ import UIKit
 
 class CardView: UIView {
 	
-	// MARK: - UIElements
-  let imageView = UIImageView(image: UIImage(named: "ladies"))
+	var cardViewModel: CardViewModel! {
+		didSet {
+			imageView.image = UIImage(named: cardViewModel.imageName)
+			informationLabel.attributedText = cardViewModel.attributedString
+			informationLabel.textAlignment = cardViewModel.textAlignment
+		}
+	}
 	
-	lazy var informationLabel: UILabel = {
+	// MARK: - UIElements
+  fileprivate let imageView = UIImageView(image: UIImage(named: "ladies"))
+	fileprivate lazy var informationLabel: UILabel = {
 		let label = UILabel()
 		label.numberOfLines = 0
 		label.textColor = .white
@@ -43,6 +50,7 @@ class CardView: UIView {
 		
 		addSubview(imageView)
 		imageView.fillSuperview()
+		imageView.contentMode = .scaleAspectFill
 		
 		addSubview(informationLabel)
 		informationLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 0))

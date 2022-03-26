@@ -18,11 +18,16 @@ class HomeController: UIViewController {
 		return view
 	}()
 	
-	let cardViewModel = [
-		User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "ladies").toCardViewModel(),
-		User(name: "Jane", age: 18, profession: "Teacher", imageName: "like").toCardViewModel()
-	]
-
+	let cardViewModel: [CardViewModel] = {
+		let producers = [
+			User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "ladies"),
+			User(name: "Jane", age: 18, profession: "Teacher", imageName: "lady4c"),
+			Advertiser(title: "Slide Out Menu", brandName: "Lets Build That App", posterPhotoName: "slide_out_menu_poster")
+		] as [ProducesCardViewModel]
+		
+		let viewModels = producers.map { return $0.toCardViewModel() }
+		return viewModels
+	}()
 	// MARK: - View Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -32,7 +37,7 @@ class HomeController: UIViewController {
 		configureUI()
 		setupDummyCards()
 	}
-
+	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .darkContent
 	}
@@ -59,13 +64,11 @@ class HomeController: UIViewController {
 	fileprivate func setupDummyCards() {
 		cardViewModel.forEach { cardVM in
 			let cardView = CardView(frame: .zero)
-			cardView.imageView.image = UIImage(named: cardVM.imageName)
-			cardView.informationLabel.attributedText = cardVM.attributedString
-			cardView.informationLabel.textAlignment = cardVM.textAlignment
+			cardView.cardViewModel = cardVM
 			cardDeckView.addSubview(cardView)
 			cardView.fillSuperview()
 		}
 	}
-
+	
 }
 
