@@ -20,15 +20,16 @@ class HomeController: UIViewController {
 	
 	let cardViewModel: [CardViewModel] = {
 		let producers = [
-			User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "ladies"),
-			User(name: "Jane", age: 18, profession: "Teacher", imageName: "lady4c"),
+			User(name: "Kelly", age: 23, profession: "Music DJ", imageNames: ["kelly1", "kelly2", "kelly3"]),
+			User(name: "Jane", age: 18, profession: "Teacher", imageNames: ["jane1", "jane2", "jane3"]),
 			Advertiser(title: "Slide Out Menu", brandName: "Lets Build That App", posterPhotoName: "slide_out_menu_poster")
 		] as [ProducesCardViewModel]
 		
 		let viewModels = producers.map { return $0.toCardViewModel() }
 		return viewModels
 	}()
-	// MARK: - View Lifecycle
+	
+	// MARK: - ViewController Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
