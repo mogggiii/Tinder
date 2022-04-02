@@ -11,25 +11,25 @@ class CardView: UIView {
 	
 	// MARK: - CardViewModel
 	
-//	var cardViewModel: CardViewModel! {
-//		didSet {
-//			let imageName = cardViewModel.imageNames.first ?? ""
-//			imageView.image = UIImage(named: imageName)
-//			informationLabel.attributedText = cardViewModel.attributedString
-//			informationLabel.textAlignment = cardViewModel.textAlignment
-//			
-//			(0..<cardViewModel.imageNames.count).forEach { _ in
-//				let barView = UIView()
-//				barView.layer.cornerRadius = 2
-//				barView.backgroundColor = barDeselectedColor
-//				barsStackView.addArrangedSubview(barView)
-//			}
-//			
-//			barsStackView.arrangedSubviews.first?.backgroundColor = .white
-//			
-//			setupImageIndexObserver()
-//		}
-//	}
+	var cardViewModel: CardViewModel! {
+		didSet {
+			let imageName = cardViewModel.imageNames.first ?? ""
+			imageView.image = UIImage(named: imageName)
+			informationLabel.attributedText = cardViewModel.attributedString
+			informationLabel.textAlignment = cardViewModel.textAlignment
+			
+			(0..<cardViewModel.imageNames.count).forEach { _ in
+				let barView = UIView()
+				barView.layer.cornerRadius = 2
+				barView.backgroundColor = barDeselectedColor
+				barsStackView.addArrangedSubview(barView)
+			}
+			
+			barsStackView.arrangedSubviews.first?.backgroundColor = .white
+			
+			setupImageIndexObserver()
+		}
+	}
 	
 	/// encapsulation
 	fileprivate let barDeselectedColor = UIColor(white: 0, alpha: 0.1)
