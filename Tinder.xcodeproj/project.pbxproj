@@ -20,6 +20,8 @@
 		CE6E274527E372F500AD1C73 /* Extensions+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E274427E372F400AD1C73 /* Extensions+UIView.swift */; };
 		CEC54A0127E87A200070EF09 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC54A0027E87A200070EF09 /* CardViewModel.swift */; };
 		CEC86E6727E4A97700C72C6E /* User .swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC86E6627E4A97700C72C6E /* User .swift */; };
+		CEDF9D5F27F8B76C007C714C /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */; };
+		CEDF9D6127F8BEAA007C714C /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDF9D6027F8BEAA007C714C /* CustomTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		CE6E274427E372F400AD1C73 /* Extensions+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+UIView.swift"; sourceTree = "<group>"; };
 		CEC54A0027E87A200070EF09 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		CEC86E6627E4A97700C72C6E /* User .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User .swift"; sourceTree = "<group>"; };
+		CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		CEDF9D6027F8BEAA007C714C /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,8 +77,8 @@
 				CEC86E6527E4A95800C72C6E /* Model  */,
 				CE6E273B27E3488A00AD1C73 /* Views */,
 				CEC549FF27E879E30070EF09 /* ViewModel */,
-				CE6E273C27E3489B00AD1C73 /* Extensions */,
 				CEC549FE27E879240070EF09 /* Controllers */,
+				CE6E273C27E3489B00AD1C73 /* Extensions */,
 				CE6E274127E3579300AD1C73 /* Resourses */,
 				CE0104CD27E1E74C00C79BD6 /* Info.plist */,
 			);
@@ -89,6 +93,7 @@
 				CE6E274227E3647200AD1C73 /* CardView.swift */,
 				CE0104C827E1E74C00C79BD6 /* Assets.xcassets */,
 				CE0104CA27E1E74C00C79BD6 /* LaunchScreen.storyboard */,
+				CEDF9D6027F8BEAA007C714C /* CustomTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -115,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				CE0104C327E1E74600C79BD6 /* HomeController.swift */,
+				CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -206,12 +212,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEDF9D6127F8BEAA007C714C /* CustomTextField.swift in Sources */,
 				CE0104C427E1E74600C79BD6 /* HomeController.swift in Sources */,
 				CE6E273E27E348C300AD1C73 /* HomeBottomsStackView.swift in Sources */,
 				CE2ED06A27EF787600AC74DF /* Advertiser.swift in Sources */,
 				CE6E274527E372F500AD1C73 /* Extensions+UIView.swift in Sources */,
 				CE6E274027E34FAA00AD1C73 /* TopNavigationStackView.swift in Sources */,
 				CEC54A0127E87A200070EF09 /* CardViewModel.swift in Sources */,
+				CEDF9D5F27F8B76C007C714C /* RegistrationViewController.swift in Sources */,
 				CE0104C027E1E74600C79BD6 /* AppDelegate.swift in Sources */,
 				CE0104C227E1E74600C79BD6 /* SceneDelegate.swift in Sources */,
 				CEC86E6727E4A97700C72C6E /* User .swift in Sources */,
