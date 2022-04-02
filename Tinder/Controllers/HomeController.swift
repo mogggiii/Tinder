@@ -41,10 +41,6 @@ class HomeController: UIViewController {
 		setupDummyCards()
 	}
 	
-	override var preferredStatusBarStyle: UIStatusBarStyle {
-		return .darkContent
-	}
-	
 	// MARK: - Fileprivate methods
 	
 	@objc fileprivate func handleSetting() {
