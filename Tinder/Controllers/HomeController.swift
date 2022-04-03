@@ -9,7 +9,8 @@ import UIKit
 
 class HomeController: UIViewController {
 	
-	// MARK: UIElements
+	// MARK: UI Components
+	
 	lazy var topStackView = TopNavigationStackView()
 	lazy var bottomStackView = HomeBottomsStackView()
 	lazy var cardDeckView: UIView = {
@@ -30,6 +31,7 @@ class HomeController: UIViewController {
 	}()
 	
 	// MARK: - ViewController Lifecycle
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		

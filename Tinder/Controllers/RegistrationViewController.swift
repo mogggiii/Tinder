@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import JGProgressHUD
 
 class RegistrationViewController: UIViewController {
 	
@@ -61,16 +63,14 @@ class RegistrationViewController: UIViewController {
 		button.isEnabled = false
 		button.heightAnchor.constraint(equalToConstant: 40).isActive = true
 		button.layer.cornerRadius = 20
+		button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
 		return button
 	}()
-	
-	
 	
 	// MARK: - Life Cycle
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
 		
 		setupGradientLayer()
 		setupUI()
@@ -100,6 +100,14 @@ class RegistrationViewController: UIViewController {
 	}
 	
 	// MARK: - Fileprivate Methods
+	
+	fileprivate func showHUDWithError(error: Error) {
+		let hud = JGProgressHUD(style: .dark)
+		hud.textLabel.text = "Failed Registration"
+		hud.detailTextLabel.text = error.localizedDescription
+		hud.show(in: self.view)
+		hud.dismiss(afterDelay: 4)
+	}
 	
 	fileprivate func setupRegistrationViewModelObserver() {
 		registrationViewModel.isFormValidObserber = { [weak self] isFormValid in
@@ -192,6 +200,21 @@ class RegistrationViewController: UIViewController {
 			registrationViewModel.password = textField.text
 		default:
 			break
+		}
+	}
+	
+	@objc fileprivate func handleRegister() {
+		self.handleTapDismiss()
+		guard let email = emailTextField.text, let password = passwordTextField.text else { return }
+		
+		Auth.auth().createUser(withEmail: email, password: password) { [weak self] authDataResult, error in
+			if let error = error {
+				print("Error register user", error)
+				self?.showHUDWithError(error: error)
+				return
+			}
+			
+			print("Succesfully register user", authDataResult?.user.uid ?? "")
 		}
 	}
 	
