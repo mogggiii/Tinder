@@ -13,6 +13,7 @@
 		CE0104C927E1E74C00C79BD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0104C827E1E74C00C79BD6 /* Assets.xcassets */; };
 		CE0104CC27E1E74C00C79BD6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0104CA27E1E74C00C79BD6 /* LaunchScreen.storyboard */; };
 		CE2ED06A27EF787600AC74DF /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2ED06927EF787600AC74DF /* Advertiser.swift */; };
+		CE586DB327F9803A00B4FEE5 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE586DB227F9803A00B4FEE5 /* RegistrationViewModel.swift */; };
 		CE6E273A27E1F4F400AD1C73 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E273927E1F4F400AD1C73 /* UIColor + Extension.swift */; };
 		CE6E273E27E348C300AD1C73 /* HomeBottomsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E273D27E348C300AD1C73 /* HomeBottomsStackView.swift */; };
 		CE6E274027E34FAA00AD1C73 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E273F27E34FAA00AD1C73 /* TopNavigationStackView.swift */; };
@@ -33,6 +34,7 @@
 		CE0104CB27E1E74C00C79BD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0104CD27E1E74C00C79BD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE2ED06927EF787600AC74DF /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
+		CE586DB227F9803A00B4FEE5 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		CE6E273927E1F4F400AD1C73 /* UIColor + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		CE6E273D27E348C300AD1C73 /* HomeBottomsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomsStackView.swift; sourceTree = "<group>"; };
 		CE6E273F27E34FAA00AD1C73 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				CEC54A0027E87A200070EF09 /* CardViewModel.swift */,
+				CE586DB227F9803A00B4FEE5 /* RegistrationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				CEDF9D6127F8BEAA007C714C /* CustomTextField.swift in Sources */,
 				CE0104C427E1E74600C79BD6 /* HomeController.swift in Sources */,
 				CE6E273E27E348C300AD1C73 /* HomeBottomsStackView.swift in Sources */,
+				CE586DB327F9803A00B4FEE5 /* RegistrationViewModel.swift in Sources */,
 				CE2ED06A27EF787600AC74DF /* Advertiser.swift in Sources */,
 				CE6E274527E372F500AD1C73 /* Extensions+UIView.swift in Sources */,
 				CE6E274027E34FAA00AD1C73 /* TopNavigationStackView.swift in Sources */,
