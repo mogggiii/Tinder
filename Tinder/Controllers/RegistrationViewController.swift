@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 import JGProgressHUD
 
 class RegistrationViewController: UIViewController {
@@ -15,6 +16,8 @@ class RegistrationViewController: UIViewController {
 	let registrationViewModel = RegistrationViewModel()
 	
 	// MARK: - UI Components
+	
+	let registeringHUD = JGProgressHUD(style: .dark)
 	
 	let selectedPhoto: UIButton = {
 		let button = UIButton(type: .system)
@@ -91,7 +94,7 @@ class RegistrationViewController: UIViewController {
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
-		NotificationCenter.default.removeObserver(self)
+//		NotificationCenter.default.removeObserver(self)
 	}
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -105,6 +108,7 @@ class RegistrationViewController: UIViewController {
 	// MARK: - Fileprivate Methods
 	
 	fileprivate func showHUDWithError(error: Error) {
+		registeringHUD.dismiss()
 		let hud = JGProgressHUD(style: .dark)
 		hud.textLabel.text = "Failed Registration"
 		hud.detailTextLabel.text = error.localizedDescription
@@ -127,6 +131,15 @@ class RegistrationViewController: UIViewController {
 		
 		registrationViewModel.bindableImage.bind { [weak self] image in
 			self?.selectedPhoto.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+		}
+		
+		registrationViewModel.bindableIsRegistering.bind { [weak self] isRegistering in
+			if isRegistering == true {
+				self?.registeringHUD.textLabel.text = "Register..."
+				self?.registeringHUD.show(in: self!.view)
+			} else {
+				self?.registeringHUD.dismiss()
+			}
 		}
 	}
 	
@@ -214,17 +227,14 @@ class RegistrationViewController: UIViewController {
 	
 	@objc fileprivate func handleRegister() {
 		self.handleTapDismiss()
-		guard let email = emailTextField.text, let password = passwordTextField.text else { return }
-		
-		Auth.auth().createUser(withEmail: email, password: password) { [weak self] authDataResult, error in
+		registrationViewModel.performRegistration { [weak self] error in
 			if let error = error {
-				print("Error register user", error)
 				self?.showHUDWithError(error: error)
-				return
 			}
 			
-			print("Succesfully register user", authDataResult?.user.uid ?? "")
+			print("FINISH REGISTER USER")
 		}
+		
 	}
 	
 	@objc fileprivate func handleSelectPhoto() {
