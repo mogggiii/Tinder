@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import Firebase
 
-class HomeController: UIViewController {
+class HomeViewController: UIViewController {
+	
+	var cardViewModel = [CardViewModel]()
 	
 	// MARK: UI Components
 	
@@ -19,16 +22,16 @@ class HomeController: UIViewController {
 		return view
 	}()
 	
-	let cardViewModel: [CardViewModel] = {
-		let producers = [
-			User(name: "Kelly", age: 23, profession: "Music DJ", imageNames: ["kelly1", "kelly2", "kelly3"]),
-			User(name: "Jane", age: 18, profession: "Teacher", imageNames: ["jane1", "jane2", "jane3"]),
-			Advertiser(title: "Slide Out Menu", brandName: "Lets Build That App", posterPhotoName: "slide_out_menu_poster")
-		] as [ProducesCardViewModel]
-		
-		let viewModels = producers.map { return $0.toCardViewModel() }
-		return viewModels
-	}()
+//	let cardViewModel: [CardViewModel] = {
+//		let producers = [
+//			User(name: "Kelly", age: 23, profession: "Music DJ", imageNames: ["kelly1", "kelly2", "kelly3"]),
+//			User(name: "Jane", age: 18, profession: "Teacher", imageNames: ["jane1", "jane2", "jane3"]),
+//			Advertiser(title: "Slide Out Menu", brandName: "Lets Build That App", posterPhotoName: "slide_out_menu_poster")
+//		] as [ProducesCardViewModel]
+//
+//		let viewModels = producers.map { return $0.toCardViewModel() }
+//		return viewModels
+//	}()
 	
 	// MARK: - ViewController Lifecycle
 	
@@ -41,6 +44,7 @@ class HomeController: UIViewController {
 		
 		configureUI()
 		setupDummyCards()
+		fetchUsersFromFirestore()
 	}
 	
 	// MARK: - Fileprivate methods
@@ -77,6 +81,24 @@ class HomeController: UIViewController {
 			cardView.cardViewModel = cardVM
 			cardDeckView.addSubview(cardView)
 			cardView.fillSuperview()
+		}
+	}
+	
+	fileprivate func fetchUsersFromFirestore() {
+		Firestore.firestore().collection("users").getDocuments { snapshot, error in
+			if let error = error {
+				print("Error fetch users", error.localizedDescription)
+				return
+			}
+			
+			snapshot?.documents.forEach({ documentSnapshot in
+				let userDictionary = documentSnapshot.data()
+				let user = User(dictionary: userDictionary)
+				self.cardViewModel.append(user.toCardViewModel())
+				print(user.name, user.imageUrl1)
+			})
+			
+			self.setupDummyCards()
 		}
 	}
 	
