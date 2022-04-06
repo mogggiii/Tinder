@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseStorage
+import FirebaseFirestore
 
 class RegistrationViewModel {
 	
@@ -47,27 +48,56 @@ class RegistrationViewModel {
 			
 			print("Succesfully register user", authDataResult?.user.uid ?? "")
 			
-			let filename = UUID().uuidString
-			let reference = Storage.storage().reference(withPath: "/images/\(filename)")
-			let imageData = self?.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
+			/// Upload image to storage
+			self?.saveImageToFirebase(completion: completion)
+		}
+	}
+	
+	fileprivate func saveImageToFirebase(completion: @escaping (Error?) -> ()) {
+		let filename = UUID().uuidString
+		let reference = Storage.storage().reference(withPath: "/images/\(filename)")
+		let imageData = self.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
+		
+		reference.putData(imageData, metadata: nil) { _, error in
+			if let error = error {
+				completion(error)
+				return
+			}
 			
-			reference.putData(imageData, metadata: nil) { _, error in
+			print("Finish uploading image to storage")
+			reference.downloadURL { url, error in
 				if let error = error {
 					completion(error)
 					return
 				}
 				
-				print("Finish uploading image to storage")
-				reference.downloadURL { url, error in
-					if let error = error {
-						completion(error)
-						return
-					}
-					
-					self?.bindableIsRegistering.value = false
-					print("DOWNLOAD URL", url?.absoluteString ?? "")
-				}
+				self.bindableIsRegistering.value = false
+				print("DOWNLOAD URL", url?.absoluteString ?? "")
+				
+				/// save user data to firestore
+				let imageUrl = url?.absoluteString ?? ""
+				self.saveInfoToFirestore(imageUrl: imageUrl, completion: completion)
 			}
+		}
+	}
+	
+	fileprivate func saveInfoToFirestore(imageUrl: String, completion: @escaping (Error?) ->()) {
+		let uid = Auth.auth().currentUser?.uid ?? ""
+		let docData = [
+			"fullName": fullName ?? "",
+			"uid": uid,
+			"email": email ?? "",
+			"imageUrl1": imageUrl
+		]
+		
+		Firestore.firestore().collection("users").document(uid).setData(docData) { error in
+			if let error = error {
+				completion(error)
+				return
+			}
+			
+			print("SUCCESS ADD USER")
+			completion(nil)
 		}
 	}
 	
