@@ -21,6 +21,7 @@
 		CE6E274327E3647200AD1C73 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E274227E3647200AD1C73 /* CardView.swift */; };
 		CE6E274527E372F500AD1C73 /* Extensions+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E274427E372F400AD1C73 /* Extensions+UIView.swift */; };
 		CE8D03EA27FC1C730069E009 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8D03E927FC1C720069E009 /* Bindable.swift */; };
+		CEAC663127FF088500B0ECCD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC663027FF088500B0ECCD /* SettingsViewController.swift */; };
 		CEC54A0127E87A200070EF09 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC54A0027E87A200070EF09 /* CardViewModel.swift */; };
 		CEC86E6727E4A97700C72C6E /* User .swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC86E6627E4A97700C72C6E /* User .swift */; };
 		CEDF9D5F27F8B76C007C714C /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */; };
@@ -47,6 +48,7 @@
 		CE6E274227E3647200AD1C73 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		CE6E274427E372F400AD1C73 /* Extensions+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+UIView.swift"; sourceTree = "<group>"; };
 		CE8D03E927FC1C720069E009 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
+		CEAC663027FF088500B0ECCD /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		CEC54A0027E87A200070EF09 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		CEC86E6627E4A97700C72C6E /* User .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User .swift"; sourceTree = "<group>"; };
 		CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			children = (
 				CE0104C327E1E74600C79BD6 /* HomeController.swift */,
 				CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */,
+				CEAC663027FF088500B0ECCD /* SettingsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				CE2ED06A27EF787600AC74DF /* Advertiser.swift in Sources */,
 				CE8D03EA27FC1C730069E009 /* Bindable.swift in Sources */,
 				CE6E274527E372F500AD1C73 /* Extensions+UIView.swift in Sources */,
+				CEAC663127FF088500B0ECCD /* SettingsViewController.swift in Sources */,
 				CE6E274027E34FAA00AD1C73 /* TopNavigationStackView.swift in Sources */,
 				CEC54A0127E87A200070EF09 /* CardViewModel.swift in Sources */,
 				CEDF9D5F27F8B76C007C714C /* RegistrationViewController.swift in Sources */,

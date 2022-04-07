@@ -234,7 +234,6 @@ class RegistrationViewController: UIViewController {
 			
 			print("FINISH REGISTER USER")
 		}
-		
 	}
 	
 	@objc fileprivate func handleSelectPhoto() {
@@ -242,11 +241,9 @@ class RegistrationViewController: UIViewController {
 		imagePicker.delegate = self
 		present(imagePicker, animated: true)
 	}
-	
 }
 
-// MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
-
+// MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate 
 extension RegistrationViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

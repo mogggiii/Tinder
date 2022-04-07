@@ -40,11 +40,10 @@ class HomeViewController: UIViewController {
 	
 // MARK: - Fileprivate methods objc
 	@objc fileprivate func handleSetting() {
-		print("Show registretion page")
-		let registrationController = RegistrationViewController()
-		registrationController.modalPresentationStyle = .fullScreen
-		
-		present(registrationController, animated: true)
+		let settingsController = SettingsViewController()
+		let navController = UINavigationController(rootViewController: settingsController)
+		navController.modalPresentationStyle = .fullScreen
+		present(navController, animated: true)
 	}
 	
 	@objc fileprivate func handleRefresh() {
