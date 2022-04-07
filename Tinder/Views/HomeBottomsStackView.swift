@@ -9,6 +9,22 @@ import UIKit
 
 class HomeBottomsStackView: UIStackView {
 	
+// MARK: - Static
+	static func createButton(image: UIImage) -> UIButton {
+		let button = UIButton(type: .system)
+		button.setImage(image.withRenderingMode(.alwaysOriginal), for: .normal)
+		button.imageView?.contentMode = .scaleAspectFill
+		return button
+	}
+	
+// MARK: - UI Components
+	let refreshButton = createButton(image: UIImage(named: "refresh") ?? UIImage())
+	let dislikeButton = createButton(image: UIImage(named: "dismiss") ?? UIImage())
+	let superLikeButton = createButton(image: UIImage(named: "favorite") ?? UIImage())
+	let likeButton = createButton(image: UIImage(named: "like") ?? UIImage())
+	let specialButton = createButton(image: UIImage(named: "lightning") ?? UIImage())
+	
+// MARK: - Init
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		distribution = .fillEqually
@@ -21,16 +37,10 @@ class HomeBottomsStackView: UIStackView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	// MARK: - Fileprivate Methods
+// MARK: - Fileprivate Methods
 	fileprivate func configureUI() {
-		let subviews = [UIImage(named: "refresh"), UIImage(named: "dismiss"), UIImage(named: "favorite"), UIImage(named: "like"),  UIImage(named: "lightning")].map { image -> UIView in
-			let button = UIButton(type: .system)
-			button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-			return button
-		}
-		
-		subviews.forEach { view in
-			addArrangedSubview(view)
+		[refreshButton, dislikeButton, superLikeButton, likeButton, specialButton].forEach { button in
+			self.addArrangedSubview(button)
 		}
 	}
 }

@@ -7,48 +7,38 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
+import JGProgressHUD
 
 class HomeViewController: UIViewController {
 	
 	var cardViewModel = [CardViewModel]()
+	var lastFetchUser: User?
 	
-	// MARK: UI Components
-	
+// MARK: UI Components
 	lazy var topStackView = TopNavigationStackView()
-	lazy var bottomStackView = HomeBottomsStackView()
+	lazy var bottomControls = HomeBottomsStackView()
 	lazy var cardDeckView: UIView = {
 		let view = UIView()
 		view.layer.cornerRadius = 10
 		return view
 	}()
 	
-//	let cardViewModel: [CardViewModel] = {
-//		let producers = [
-//			User(name: "Kelly", age: 23, profession: "Music DJ", imageNames: ["kelly1", "kelly2", "kelly3"]),
-//			User(name: "Jane", age: 18, profession: "Teacher", imageNames: ["jane1", "jane2", "jane3"]),
-//			Advertiser(title: "Slide Out Menu", brandName: "Lets Build That App", posterPhotoName: "slide_out_menu_poster")
-//		] as [ProducesCardViewModel]
-//
-//		let viewModels = producers.map { return $0.toCardViewModel() }
-//		return viewModels
-//	}()
-	
-	// MARK: - ViewController Lifecycle
-	
+// MARK: - ViewController Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		view.backgroundColor = .white
 		
 		topStackView.settingsButton.addTarget(self, action: #selector(handleSetting), for: .touchUpInside)
+		bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
 		
 		configureUI()
-		setupDummyCards()
+		setupFirestoreUserCards()
 		fetchUsersFromFirestore()
 	}
 	
-	// MARK: - Fileprivate methods
-	
+// MARK: - Fileprivate methods objc
 	@objc fileprivate func handleSetting() {
 		print("Show registretion page")
 		let registrationController = RegistrationViewController()
@@ -57,8 +47,14 @@ class HomeViewController: UIViewController {
 		present(registrationController, animated: true)
 	}
 	
+	@objc fileprivate func handleRefresh() {
+		print("Refresh")
+		fetchUsersFromFirestore()
+	}
+
+// MARK: - Fileprivate methods
 	fileprivate func configureUI() {
-		let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardDeckView, bottomStackView])
+		let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardDeckView, bottomControls])
 		overallStackView.axis = .vertical
 		overallStackView.translatesAutoresizingMaskIntoConstraints = false
 		view.addSubview(overallStackView)
@@ -75,7 +71,7 @@ class HomeViewController: UIViewController {
 		overallStackView.bringSubviewToFront(cardDeckView)
 	}
 	
-	fileprivate func setupDummyCards() {
+	fileprivate func setupFirestoreUserCards() {
 		cardViewModel.forEach { cardVM in
 			let cardView = CardView(frame: .zero)
 			cardView.cardViewModel = cardVM
@@ -85,7 +81,13 @@ class HomeViewController: UIViewController {
 	}
 	
 	fileprivate func fetchUsersFromFirestore() {
-		Firestore.firestore().collection("users").getDocuments { snapshot, error in
+		let hud = JGProgressHUD(style: .dark)
+		hud.textLabel.text = "Fetching Users..."
+		hud.show(in: view)
+		
+		let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastFetchUser?.uid ?? ""]).limit(to: 2)
+		query.getDocuments { snapshot, error in
+			hud.dismiss()
 			if let error = error {
 				print("Error fetch users", error.localizedDescription)
 				return
@@ -95,10 +97,22 @@ class HomeViewController: UIViewController {
 				let userDictionary = documentSnapshot.data()
 				let user = User(dictionary: userDictionary)
 				self.cardViewModel.append(user.toCardViewModel())
-				print(user.name, user.imageUrl1)
+				self.lastFetchUser = user
+				print(user.uid)
+				self.setupCardFromUser(user: user)
 			})
 			
-			self.setupDummyCards()
+			self.cardViewModel.removeAll()
+		}
+	}
+	
+	fileprivate func setupCardFromUser(user: User) {
+		cardViewModel.forEach { cardVM in
+			let cardView = CardView(frame: .zero)
+			cardView.cardViewModel = user.toCardViewModel()
+			cardDeckView.addSubview(cardView)
+			cardDeckView.sendSubviewToBack(cardView)
+			cardView.fillSuperview()
 		}
 	}
 	
