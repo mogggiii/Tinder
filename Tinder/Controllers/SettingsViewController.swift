@@ -6,6 +6,10 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
+import JGProgressHUD
+import SDWebImage
 
 // MARK: - Custom UI Components
 	class CustomImagePickerController: UIImagePickerController {
@@ -21,6 +25,8 @@ import UIKit
 	}
 
 class SettingsViewController: UITableViewController {
+	
+	var user: User?
 	
 	// MARK: - UI Components
 	lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
@@ -50,12 +56,15 @@ class SettingsViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		setupNavigationItems()
-		tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
 		headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 300)
+		setupNavigationItems()
+		
+		tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
 		tableView.tableHeaderView = headerView
 		tableView.tableFooterView = UIView()
 		tableView.keyboardDismissMode = .interactive
+		
+		fetchCurrentUser()
 	}
 	
 	// MARK: - Objc fileprivate methods
@@ -93,8 +102,30 @@ class SettingsViewController: UITableViewController {
 		]
 	}
 	
+	fileprivate func fetchCurrentUser() {
+		guard let uid = Auth.auth().currentUser?.uid else { return }
+		Firestore.firestore().collection("users").document(uid).getDocument { [weak self] snapshot, error in
+			if let error = error {
+				print("Error fetch user info", error.localizedDescription)
+				return
+			}
+			
+			guard let dictionary = snapshot?.data() else { return }
+			self?.user = User(dictionary: dictionary)
+			self?.loadUserPhoto()
+			self?.tableView.reloadData()
+		}
+	}
+	
+	fileprivate func loadUserPhoto() {
+		guard let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) else { return }
+		SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { [weak self] image, _, _, _, _, _ in
+			self?.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+		}
+	}
+	
 	// MARK: - Table View Data Source
-	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {		
+	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		let headerLabel = HeaderLabel()
 		switch section {
 		case 0:
@@ -127,10 +158,15 @@ class SettingsViewController: UITableViewController {
 		switch indexPath.section {
 		case 0:
 			cell.textField.placeholder = "Enter Name"
+			cell.textField.text = user?.name
 		case 1:
 			cell.textField.placeholder = "Enter Profession"
+			cell.textField.text = user?.profession
 		case 2:
 			cell.textField.placeholder = "Enter Age"
+			if let age = user?.age {
+				cell.textField.text = String(age)
+			}
 		default:
 			cell.textField.placeholder = "Enter Bio"
 		}
