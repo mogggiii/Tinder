@@ -68,6 +68,28 @@ class SettingsViewController: UITableViewController {
 	}
 	
 	// MARK: - Objc fileprivate methods
+	@objc fileprivate func handleSave() {
+		guard let uid = Auth.auth().currentUser?.uid else { return }
+		let docData: [String: Any] = [
+			"fullName": user?.name ?? "",
+			"uid": uid,
+			"profession": user?.profession ?? "",
+			"age": user?.age ?? -100,
+			"imageUrl1": user?.imageUrl1 ?? ""
+		]
+		
+		let hud = JGProgressHUD(style: .dark)
+		hud.textLabel.text = "Saving settings"
+		hud.show(in: view)
+		Firestore.firestore().collection("users").document(uid).setData(docData) { error in
+			hud.dismiss()
+			if let error = error {
+				print("Error save data", error)
+				return
+			}
+		}
+	}
+	
 	@objc fileprivate func handleCancel() {
 		dismiss(animated: true)
 	}
@@ -78,6 +100,18 @@ class SettingsViewController: UITableViewController {
 		imagePicker.imageButton = button
 		present(imagePicker, animated: true)
 		print("Selected Photo", button)
+	}
+	
+	@objc fileprivate func handleNameChange(textField: UITextField) {
+		self.user?.name = textField.text
+	}
+	
+	@objc fileprivate func handleProfessionChange(textField: UITextField) {
+		self.user?.profession = textField.text
+	}
+	
+	@objc fileprivate func handleAgeChange(textField: UITextField) {
+		self.user?.age = Int(textField.text ?? "")
 	}
 	
 	// MARK: - Fileprivate Methods
@@ -97,7 +131,7 @@ class SettingsViewController: UITableViewController {
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
 		navigationItem.rightBarButtonItems = [
-			UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleCancel)),
+			UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
 			UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleCancel))
 		]
 	}
@@ -159,11 +193,14 @@ class SettingsViewController: UITableViewController {
 		case 0:
 			cell.textField.placeholder = "Enter Name"
 			cell.textField.text = user?.name
+			cell.textField.addTarget(self, action: #selector(handleNameChange), for: .editingChanged)
 		case 1:
 			cell.textField.placeholder = "Enter Profession"
 			cell.textField.text = user?.profession
+			cell.textField.addTarget(self, action: #selector(handleProfessionChange), for: .editingChanged)
 		case 2:
 			cell.textField.placeholder = "Enter Age"
+			cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
 			if let age = user?.age {
 				cell.textField.text = String(age)
 			}
