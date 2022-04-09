@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseStorage
 import JGProgressHUD
 import SDWebImage
 
@@ -75,7 +76,9 @@ class SettingsViewController: UITableViewController {
 			"uid": uid,
 			"profession": user?.profession ?? "",
 			"age": user?.age ?? -100,
-			"imageUrl1": user?.imageUrl1 ?? ""
+			"imageUrl1": user?.imageUrl1 ?? "",
+			"imageUrl2": user?.imageUrl2 ?? "",
+			"imageUrl3": user?.imageUrl3 ?? ""
 		]
 		
 		let hud = JGProgressHUD(style: .dark)
@@ -152,9 +155,22 @@ class SettingsViewController: UITableViewController {
 	}
 	
 	fileprivate func loadUserPhoto() {
-		guard let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) else { return }
-		SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { [weak self] image, _, _, _, _, _ in
-			self?.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+		if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
+			SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { [weak self] image, _, _, _, _, _ in
+				self?.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+			}
+		}
+		
+		if let imageUrl = user?.imageUrl2, let url = URL(string: imageUrl) {
+			SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { [weak self] image, _, _, _, _, _ in
+				self?.image2Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+			}
+		}
+		
+		if let imageUrl = user?.imageUrl3, let url = URL(string: imageUrl) {
+			SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { [weak self] image, _, _, _, _, _ in
+				self?.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+			}
 		}
 	}
 	
@@ -219,6 +235,40 @@ extension SettingsViewController: UIImagePickerControllerDelegate, UINavigationC
 		let imageButton = (picker as? CustomImagePickerController)?.imageButton
 		imageButton?.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
 		dismiss(animated: true)
+		
+		/// Upload Images to Firebase Storage
+		let fileName = UUID().uuidString
+		let reference = Storage.storage().reference(withPath: "/images/\(fileName)")
+		guard let uploadData = image?.jpegData(compressionQuality: 0.75) else { return }
+		
+		let hud = JGProgressHUD(style: .dark)
+		hud.textLabel.text = "Uploading Image"
+		hud.show(in: view)
+		
+		reference.putData(uploadData, metadata: nil) { _, error in
+			if let error = error {
+				hud.dismiss()
+				print("Failed to upload images to storage", error.localizedDescription)
+				return
+			}
+			
+			reference.downloadURL { url, error in
+				hud.dismiss()
+				if let error = error {
+					print("Failed to retrieve url", error.localizedDescription)
+					return
+				}
+				
+				switch imageButton {
+				case self.image1Button:
+					self.user?.imageUrl1 = url?.absoluteString
+				case self.image2Button:
+					self.user?.imageUrl2 = url?.absoluteString
+				default:
+					self.user?.imageUrl3 = url?.absoluteString
+				}
+			}
+		}
 	}
 	
 	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
