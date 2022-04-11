@@ -12,10 +12,12 @@ import JGProgressHUD
 
 class HomeViewController: UIViewController {
 	
+	fileprivate var user: User?
+	
 	var cardViewModel = [CardViewModel]()
 	var lastFetchUser: User?
 	
-// MARK: UI Components
+	// MARK: UI Components
 	lazy var topStackView = TopNavigationStackView()
 	lazy var bottomControls = HomeBottomsStackView()
 	lazy var cardDeckView: UIView = {
@@ -24,7 +26,7 @@ class HomeViewController: UIViewController {
 		return view
 	}()
 	
-// MARK: - ViewController Lifecycle
+	// MARK: - ViewController Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -34,24 +36,23 @@ class HomeViewController: UIViewController {
 		bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
 		
 		configureUI()
-		setupFirestoreUserCards()
-		fetchUsersFromFirestore()
+		fetchCurrentUser()
 	}
 	
-// MARK: - Fileprivate methods objc
+	// MARK: - Fileprivate methods objc
 	@objc fileprivate func handleSetting() {
 		let settingsController = SettingsViewController()
+		settingsController.delegate = self
 		let navController = UINavigationController(rootViewController: settingsController)
 		navController.modalPresentationStyle = .fullScreen
 		present(navController, animated: true)
 	}
 	
 	@objc fileprivate func handleRefresh() {
-		print("Refresh")
-		fetchUsersFromFirestore()
+		fetchCurrentUser()
 	}
-
-// MARK: - Fileprivate methods
+	
+	// MARK: - Fileprivate methods
 	fileprivate func configureUI() {
 		let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardDeckView, bottomControls])
 		overallStackView.axis = .vertical
@@ -70,21 +71,13 @@ class HomeViewController: UIViewController {
 		overallStackView.bringSubviewToFront(cardDeckView)
 	}
 	
-	fileprivate func setupFirestoreUserCards() {
-		cardViewModel.forEach { cardVM in
-			let cardView = CardView(frame: .zero)
-			cardView.cardViewModel = cardVM
-			cardDeckView.addSubview(cardView)
-			cardView.fillSuperview()
-		}
-	}
-	
 	fileprivate func fetchUsersFromFirestore() {
 		let hud = JGProgressHUD(style: .dark)
 		hud.textLabel.text = "Fetching Users..."
 		hud.show(in: view)
 		
-		let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastFetchUser?.uid ?? ""]).limit(to: 2)
+		guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else { return }
+		let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
 		query.getDocuments { snapshot, error in
 			hud.dismiss()
 			if let error = error {
@@ -97,11 +90,8 @@ class HomeViewController: UIViewController {
 				let user = User(dictionary: userDictionary)
 				self.cardViewModel.append(user.toCardViewModel())
 				self.lastFetchUser = user
-				print(user.uid)
 				self.setupCardFromUser(user: user)
 			})
-			
-			self.cardViewModel.removeAll()
 		}
 	}
 	
@@ -115,5 +105,27 @@ class HomeViewController: UIViewController {
 		}
 	}
 	
+	fileprivate func fetchCurrentUser() {
+		let hud = JGProgressHUD(style: .dark)
+		hud.textLabel.text = "Loading"
+		hud.show(in: view)
+		cardDeckView.subviews.forEach { $0.removeFromSuperview() }
+		Firestore.firestore().fetchCurrentUser { user, error in
+			hud.dismiss()
+			if let error = error {
+				print("Error Fetch current user", error.localizedDescription)
+				return
+			}
+			
+			self.user = user
+			self.fetchUsersFromFirestore()
+		}
+	}
 }
 
+// MARK: - SettingComtrollerDelegate
+extension HomeViewController: SettingsControllerDelegate {
+	func didSaveSettings() {
+		fetchCurrentUser()
+	}
+}

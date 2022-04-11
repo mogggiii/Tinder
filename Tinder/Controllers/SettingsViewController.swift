@@ -12,21 +12,13 @@ import FirebaseStorage
 import JGProgressHUD
 import SDWebImage
 
-// MARK: - Custom UI Components
-class CustomImagePickerController: UIImagePickerController {
-	
-	var imageButton: UIButton?
-	
-}
-
-class HeaderLabel: UILabel {
-	override func drawText(in rect: CGRect) {
-		super.drawText(in: rect.insetBy(dx: 16, dy: 0))
-	}
+protocol SettingsControllerDelegate: class {
+	func didSaveSettings()
 }
 
 class SettingsViewController: UITableViewController {
 	
+	weak var delegate: SettingsControllerDelegate?
 	var user: User?
 	
 	// MARK: - UI Components
@@ -52,6 +44,19 @@ class SettingsViewController: UITableViewController {
 		stackView.anchor(top: header.topAnchor, leading: image1Button.trailingAnchor , bottom: header.bottomAnchor, trailing: header.trailingAnchor, padding: .init(top: padding, left: padding, bottom: padding, right: padding ))
 		return header
 	}()
+	
+	// MARK: - Custom UI Components
+	class CustomImagePickerController: UIImagePickerController {
+		
+		var imageButton: UIButton?
+		
+	}
+
+	class HeaderLabel: UILabel {
+		override func drawText(in rect: CGRect) {
+			super.drawText(in: rect.insetBy(dx: 16, dy: 0))
+		}
+	}
 	
 	// MARK: - ViewController Lifecycle
 	override func viewDidLoad() {
@@ -93,6 +98,11 @@ class SettingsViewController: UITableViewController {
 			if let error = error {
 				print("Error save data", error)
 				return
+			}
+			
+			self.dismiss(animated: true) {
+				self.delegate?.didSaveSettings()
+				print("dismissal complete")
 			}
 		}
 	}
@@ -153,17 +163,15 @@ class SettingsViewController: UITableViewController {
 	}
 	
 	fileprivate func fetchCurrentUser() {
-		guard let uid = Auth.auth().currentUser?.uid else { return }
-		Firestore.firestore().collection("users").document(uid).getDocument { [weak self] snapshot, error in
+		Firestore.firestore().fetchCurrentUser { user, error in
 			if let error = error {
-				print("Error fetch user info", error.localizedDescription)
+				print("Error fetch current user", error.localizedDescription)
 				return
 			}
 			
-			guard let dictionary = snapshot?.data() else { return }
-			self?.user = User(dictionary: dictionary)
-			self?.loadUserPhoto()
-			self?.tableView.reloadData()
+			self.user = user
+			self.loadUserPhoto()
+			self.tableView.reloadData()
 		}
 	}
 	

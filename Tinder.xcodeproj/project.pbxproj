@@ -24,6 +24,7 @@
 		CE8D03EA27FC1C730069E009 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8D03E927FC1C720069E009 /* Bindable.swift */; };
 		CEAC663127FF088500B0ECCD /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC663027FF088500B0ECCD /* SettingsViewController.swift */; };
 		CEB7901C2802D22F0045FF91 /* AgeRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB7901B2802D22F0045FF91 /* AgeRangeCell.swift */; };
+		CEB7901E280413CA0045FF91 /* Firebase + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB7901D280413CA0045FF91 /* Firebase + Extensions.swift */; };
 		CEC54A0127E87A200070EF09 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC54A0027E87A200070EF09 /* CardViewModel.swift */; };
 		CEC86E6727E4A97700C72C6E /* User .swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC86E6627E4A97700C72C6E /* User .swift */; };
 		CEDF9D5F27F8B76C007C714C /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */; };
@@ -53,6 +54,7 @@
 		CE8D03E927FC1C720069E009 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		CEAC663027FF088500B0ECCD /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		CEB7901B2802D22F0045FF91 /* AgeRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeCell.swift; sourceTree = "<group>"; };
+		CEB7901D280413CA0045FF91 /* Firebase + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase + Extensions.swift"; sourceTree = "<group>"; };
 		CEC54A0027E87A200070EF09 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		CEC86E6627E4A97700C72C6E /* User .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User .swift"; sourceTree = "<group>"; };
 		CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			children = (
 				CE6E274427E372F400AD1C73 /* Extensions+UIView.swift */,
 				CE6E273927E1F4F400AD1C73 /* UIColor + Extension.swift */,
+				CEB7901D280413CA0045FF91 /* Firebase + Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				CE2ED06A27EF787600AC74DF /* Advertiser.swift in Sources */,
 				CE8D03EA27FC1C730069E009 /* Bindable.swift in Sources */,
 				CE6E274527E372F500AD1C73 /* Extensions+UIView.swift in Sources */,
+				CEB7901E280413CA0045FF91 /* Firebase + Extensions.swift in Sources */,
 				CEAC663127FF088500B0ECCD /* SettingsViewController.swift in Sources */,
 				CEB7901C2802D22F0045FF91 /* AgeRangeCell.swift in Sources */,
 				CE6E274027E34FAA00AD1C73 /* TopNavigationStackView.swift in Sources */,
