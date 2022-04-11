@@ -41,15 +41,13 @@ class SettingsViewController: UITableViewController {
 		stackView.spacing = padding
 		header.addSubview(stackView)
 		
-		stackView.anchor(top: header.topAnchor, leading: image1Button.trailingAnchor , bottom: header.bottomAnchor, trailing: header.trailingAnchor, padding: .init(top: padding, left: padding, bottom: padding, right: padding ))
+		stackView.anchor(top: header.topAnchor, leading: image1Button.trailingAnchor , bottom: header.bottomAnchor, trailing: header.trailingAnchor, padding: .init(top: padding, left: padding, bottom: padding, right: padding))
 		return header
 	}()
 	
 	// MARK: - Custom UI Components
 	class CustomImagePickerController: UIImagePickerController {
-		
 		var imageButton: UIButton?
-		
 	}
 
 	class HeaderLabel: UILabel {
@@ -140,6 +138,11 @@ class SettingsViewController: UITableViewController {
 		evaluateMinMax()
 	}
 	
+	@objc fileprivate func handleLogOut() {
+		try? Auth.auth().signOut()
+		dismiss(animated: true)
+	}
+	
 	// MARK: - Fileprivate Methods
 	fileprivate func createButton(selector: Selector) -> UIButton {
 		let button = UIButton(type: .system)
@@ -158,7 +161,7 @@ class SettingsViewController: UITableViewController {
 		navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
 		navigationItem.rightBarButtonItems = [
 			UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
-			UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleCancel))
+			UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogOut))
 		]
 	}
 	

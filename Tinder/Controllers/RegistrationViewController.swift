@@ -73,6 +73,15 @@ class RegistrationViewController: UIViewController {
 		return button
 	}()
 	
+	let goToLoginButton: UIButton = {
+		let button = UIButton(type: .system)
+		button.setTitle("Go to Login", for: .normal)
+		button.setTitleColor(.white, for: .normal)
+		button.titleLabel?.font = .systemFont(ofSize: 16)
+		button.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
+		return button
+	}()
+	
 	// MARK: - Life Cycle
 	
 	override func viewDidLoad() {
@@ -94,7 +103,7 @@ class RegistrationViewController: UIViewController {
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
-//		NotificationCenter.default.removeObserver(self)
+		//		NotificationCenter.default.removeObserver(self)
 	}
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -169,6 +178,7 @@ class RegistrationViewController: UIViewController {
 			passwordTextField,
 			registerButton
 		])
+		
 		sv.axis = .vertical
 		sv.distribution = .fillEqually
 		sv.spacing = 8
@@ -181,12 +191,16 @@ class RegistrationViewController: UIViewController {
 	])
 	
 	fileprivate func setupUI() {
+		navigationController?.isNavigationBarHidden = true
 		view.addSubview(overallStackView)
 		overallStackView.axis = .vertical
 		selectedPhoto.widthAnchor.constraint(equalToConstant: 275).isActive = true
 		overallStackView.spacing = 8
 		overallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
 		overallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+		
+		view.addSubview(goToLoginButton)
+		goToLoginButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 20, right: 0))
 	}
 	
 	// MARK: - @Objc fileprivate
@@ -240,6 +254,11 @@ class RegistrationViewController: UIViewController {
 		let imagePicker = UIImagePickerController()
 		imagePicker.delegate = self
 		present(imagePicker, animated: true)
+	}
+	
+	@objc fileprivate func handleGoToLogin() {
+		let loginContoller = LoginViewController()
+		navigationController?.pushViewController(loginContoller, animated: true)
 	}
 }
 

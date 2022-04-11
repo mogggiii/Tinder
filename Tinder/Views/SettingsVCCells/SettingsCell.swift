@@ -22,7 +22,6 @@ class SettingsCell: UITableViewCell {
 		override func editingRect(forBounds bounds: CGRect) -> CGRect {
 			return bounds.insetBy(dx: 24, dy: 0)
 		}
-		
 	}
 	
 	let textField: UITextField = {

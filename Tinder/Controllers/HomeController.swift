@@ -39,6 +39,18 @@ class HomeViewController: UIViewController {
 		fetchCurrentUser()
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		print("HomeVC DidAppear")
+		
+		if Auth.auth().currentUser == nil {
+			let loginController = LoginViewController()
+			loginController.delegate = self
+			let navController = UINavigationController(rootViewController: loginController)
+			navController.modalPresentationStyle = .fullScreen
+			present(navController, animated: true)
+		}
+	}
 	// MARK: - Fileprivate methods objc
 	@objc fileprivate func handleSetting() {
 		let settingsController = SettingsViewController()
@@ -126,6 +138,12 @@ class HomeViewController: UIViewController {
 // MARK: - SettingComtrollerDelegate
 extension HomeViewController: SettingsControllerDelegate {
 	func didSaveSettings() {
+		fetchCurrentUser()
+	}
+}
+
+extension HomeViewController: LoginControllerDelegate {
+	func didFinishLoggingIn() {
 		fetchCurrentUser()
 	}
 }
