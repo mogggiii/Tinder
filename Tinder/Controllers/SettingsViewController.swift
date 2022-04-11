@@ -13,17 +13,17 @@ import JGProgressHUD
 import SDWebImage
 
 // MARK: - Custom UI Components
-	class CustomImagePickerController: UIImagePickerController {
-		
-		var imageButton: UIButton?
-		
-	}
+class CustomImagePickerController: UIImagePickerController {
 	
-	class HeaderLabel: UILabel {
-		override func drawText(in rect: CGRect) {
-			super.drawText(in: rect.insetBy(dx: 16, dy: 0))
-		}
+	var imageButton: UIButton?
+	
+}
+
+class HeaderLabel: UILabel {
+	override func drawText(in rect: CGRect) {
+		super.drawText(in: rect.insetBy(dx: 16, dy: 0))
 	}
+}
 
 class SettingsViewController: UITableViewController {
 	
@@ -69,6 +69,8 @@ class SettingsViewController: UITableViewController {
 	}
 	
 	// MARK: - Objc fileprivate methods
+	
+	/// Save user settings to Firestore
 	@objc fileprivate func handleSave() {
 		guard let uid = Auth.auth().currentUser?.uid else { return }
 		let docData: [String: Any] = [
@@ -78,7 +80,9 @@ class SettingsViewController: UITableViewController {
 			"age": user?.age ?? -100,
 			"imageUrl1": user?.imageUrl1 ?? "",
 			"imageUrl2": user?.imageUrl2 ?? "",
-			"imageUrl3": user?.imageUrl3 ?? ""
+			"imageUrl3": user?.imageUrl3 ?? "",
+			"minSeekingAge": user?.minSeekingAge ?? -1,
+			"maxSeekingAge": user?.maxSeekingAge ?? -1
 		]
 		
 		let hud = JGProgressHUD(style: .dark)
@@ -115,6 +119,15 @@ class SettingsViewController: UITableViewController {
 	
 	@objc fileprivate func handleAgeChange(textField: UITextField) {
 		self.user?.age = Int(textField.text ?? "")
+	}
+	
+	// Min/Max sliders
+	@objc fileprivate func handleMinAgeChange(slider: UISlider) {
+		evaluateMinMax()
+	}
+	
+	@objc fileprivate func handleMaxAgeChange(slider: UISlider) {
+		evaluateMinMax()
 	}
 	
 	// MARK: - Fileprivate Methods
@@ -174,6 +187,20 @@ class SettingsViewController: UITableViewController {
 		}
 	}
 	
+	fileprivate func evaluateMinMax() {
+		let indexPath = IndexPath(row: 0, section: 4)
+		guard let ageRangeCell = tableView.cellForRow(at: indexPath) as? AgeRangeCell else { return }
+		let minValue = Int(ageRangeCell.minSlider.value)
+		var maxValue = Int(ageRangeCell.maxSlider.value)
+		maxValue = max(minValue, maxValue)
+		ageRangeCell.maxSlider.value = Float(maxValue)
+		ageRangeCell.minLabel.text = "Min: \(minValue)"
+		ageRangeCell.maxLabel.text = "Max: \(maxValue)"
+		
+		user?.minSeekingAge = minValue
+		user?.maxSeekingAge = maxValue
+	}
+	
 	// MARK: - Table View Data Source
 	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		let headerLabel = HeaderLabel()
@@ -184,19 +211,21 @@ class SettingsViewController: UITableViewController {
 			headerLabel.text = "Profession"
 		case 2:
 			headerLabel.text = "Age"
-		default:
+		case 3:
 			headerLabel.text = "Bio"
+		default:
+			headerLabel.text = "Seeking Age Range"
 		}
-		
+		headerLabel.font = .systemFont(ofSize: 16, weight: .bold)
 		return headerLabel
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return 40
+		return 30
 	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		return 4
+		return 5
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -204,6 +233,18 @@ class SettingsViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		/// age range cell
+		if indexPath.section == 4 {
+			let ageRangeCell = AgeRangeCell(style: .default, reuseIdentifier: nil)
+			ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
+			ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
+			ageRangeCell.minLabel.text = "Min: \(user?.minSeekingAge ?? -1)"
+			ageRangeCell.maxLabel.text = "Max: \(user?.maxSeekingAge ?? -1)"
+			ageRangeCell.minSlider.value = Float(user?.minSeekingAge ?? -1)
+			ageRangeCell.maxSlider.value = Float(user?.maxSeekingAge ?? -1)
+			return ageRangeCell
+		}
+		
 		let cell = SettingsCell(style: .default, reuseIdentifier: nil)
 		switch indexPath.section {
 		case 0:
@@ -220,8 +261,10 @@ class SettingsViewController: UITableViewController {
 			if let age = user?.age {
 				cell.textField.text = String(age)
 			}
-		default:
+		case 3:
 			cell.textField.placeholder = "Enter Bio"
+		default:
+			print("hello")
 		}
 		return cell
 	}
