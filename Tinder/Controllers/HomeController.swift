@@ -155,8 +155,9 @@ extension HomeViewController: RegistrationControllerDelegate {
 
 // MARK: - CardViewDelegate
 extension HomeViewController: CardViewDelegate {
-	func didTapMoreInfo() {
+	func didTapMoreInfo(_ cardViewModel: CardViewModel) {
 		let infoController = UserDetailsController()
+		infoController.cardViewModel = cardViewModel
 		infoController.modalPresentationStyle = .fullScreen
 		present(infoController, animated: true)
 	}

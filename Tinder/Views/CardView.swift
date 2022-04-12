@@ -9,7 +9,7 @@ import UIKit
 import SDWebImage
 
 protocol CardViewDelegate: class {
-	func didTapMoreInfo()
+	func didTapMoreInfo(_ cardViewModel: CardViewModel)
 }
 
 class CardView: UIView {
@@ -20,7 +20,7 @@ class CardView: UIView {
 	
 	var cardViewModel: CardViewModel! {
 		didSet {
-			let imageName = cardViewModel.imageNames.first ?? ""
+			let imageName = cardViewModel.imageUrls.first ?? ""
 			/// load image using sdwebimage
 			if let url = URL(string: imageName) {
 				imageView.sd_setImage(with: url)
@@ -29,7 +29,7 @@ class CardView: UIView {
 			informationLabel.attributedText = cardViewModel.attributedString
 			informationLabel.textAlignment = cardViewModel.textAlignment
 			
-			(0..<cardViewModel.imageNames.count).forEach { _ in
+			(0..<cardViewModel.imageUrls.count).forEach { _ in
 				let barView = UIView()
 				barView.layer.cornerRadius = 2
 				barView.backgroundColor = barDeselectedColor
@@ -49,6 +49,7 @@ class CardView: UIView {
 	fileprivate let gradientLayer = CAGradientLayer()
 	fileprivate let imageView = UIImageView(image: UIImage(named: "ladies"))
 	
+	// MARK: - UIComponents
 	fileprivate lazy var informationLabel: UILabel = {
 		let label = UILabel()
 		label.numberOfLines = 0
@@ -150,7 +151,7 @@ class CardView: UIView {
 	}
 	
 	@objc fileprivate func handleTapInfo() {
-		self.delegate?.didTapMoreInfo()
+		self.delegate?.didTapMoreInfo(self.cardViewModel)
 	}
 	
 	// MARK: - Animation
