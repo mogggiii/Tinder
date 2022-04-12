@@ -268,6 +268,7 @@ class SettingsViewController: UITableViewController {
 			cell.textField.addTarget(self, action: #selector(handleProfessionChange), for: .editingChanged)
 		case 2:
 			cell.textField.placeholder = "Enter Age"
+			cell.textField.keyboardType = .numberPad
 			cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
 			if let age = user?.age {
 				cell.textField.text = String(age)

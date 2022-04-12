@@ -106,12 +106,12 @@ class HomeViewController: UIViewController {
 	}
 	
 	fileprivate func setupCardFromUser(user: User) {
-			let cardView = CardView(frame: .zero)
-			cardView.delegate = self
-			cardView.cardViewModel = user.toCardViewModel()
-			cardDeckView.addSubview(cardView)
-			cardDeckView.sendSubviewToBack(cardView)
-			cardView.fillSuperview()
+		let cardView = CardView(frame: .zero)
+		cardView.delegate = self
+		cardView.cardViewModel = user.toCardViewModel()
+		cardDeckView.addSubview(cardView)
+		cardDeckView.sendSubviewToBack(cardView)
+		cardView.fillSuperview()
 	}
 	
 	fileprivate func fetchCurrentUser() {
@@ -157,6 +157,7 @@ extension HomeViewController: RegistrationControllerDelegate {
 extension HomeViewController: CardViewDelegate {
 	func didTapMoreInfo() {
 		let infoController = UserDetailsController()
+		infoController.modalPresentationStyle = .fullScreen
 		present(infoController, animated: true)
 	}
 }
