@@ -28,6 +28,7 @@
 		CEB7902128043B950045FF91 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB7902028043B940045FF91 /* LoginViewController.swift */; };
 		CEB7902328043DDD0045FF91 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB7902228043DDD0045FF91 /* LoginViewModel.swift */; };
 		CEC54A0127E87A200070EF09 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC54A0027E87A200070EF09 /* CardViewModel.swift */; };
+		CEC63F89280565BD00E850E6 /* UserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC63F88280565BD00E850E6 /* UserDetailsController.swift */; };
 		CEC86E6727E4A97700C72C6E /* User .swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC86E6627E4A97700C72C6E /* User .swift */; };
 		CEDF9D5F27F8B76C007C714C /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */; };
 		CEDF9D6127F8BEAA007C714C /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDF9D6027F8BEAA007C714C /* CustomTextField.swift */; };
@@ -60,6 +61,7 @@
 		CEB7902028043B940045FF91 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CEB7902228043DDD0045FF91 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		CEC54A0027E87A200070EF09 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
+		CEC63F88280565BD00E850E6 /* UserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsController.swift; sourceTree = "<group>"; };
 		CEC86E6627E4A97700C72C6E /* User .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User .swift"; sourceTree = "<group>"; };
 		CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		CEDF9D6027F8BEAA007C714C /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -164,10 +166,10 @@
 		CEC549FE27E879240070EF09 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CEC63F872805659C00E850E6 /* UserDetails */,
+				CEC63F852805656900E850E6 /* Login */,
 				CE0104C327E1E74600C79BD6 /* HomeController.swift */,
-				CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */,
 				CEAC663027FF088500B0ECCD /* SettingsViewController.swift */,
-				CEB7902028043B940045FF91 /* LoginViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -175,12 +177,37 @@
 		CEC549FF27E879E30070EF09 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				CEC63F862805658300E850E6 /* Login */,
 				CEC54A0027E87A200070EF09 /* CardViewModel.swift */,
-				CE586DB227F9803A00B4FEE5 /* RegistrationViewModel.swift */,
-				CEB7902228043DDD0045FF91 /* LoginViewModel.swift */,
 				CE8D03E927FC1C720069E009 /* Bindable.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CEC63F852805656900E850E6 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				CEDF9D5E27F8B76C007C714C /* RegistrationViewController.swift */,
+				CEB7902028043B940045FF91 /* LoginViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		CEC63F862805658300E850E6 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				CE586DB227F9803A00B4FEE5 /* RegistrationViewModel.swift */,
+				CEB7902228043DDD0045FF91 /* LoginViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		CEC63F872805659C00E850E6 /* UserDetails */ = {
+			isa = PBXGroup;
+			children = (
+				CEC63F88280565BD00E850E6 /* UserDetailsController.swift */,
+			);
+			path = UserDetails;
 			sourceTree = "<group>";
 		};
 		CEC86E6527E4A95800C72C6E /* Model  */ = {
@@ -327,6 +354,7 @@
 				CEB7902128043B950045FF91 /* LoginViewController.swift in Sources */,
 				CEB7901E280413CA0045FF91 /* Firebase + Extensions.swift in Sources */,
 				CEAC663127FF088500B0ECCD /* SettingsViewController.swift in Sources */,
+				CEC63F89280565BD00E850E6 /* UserDetailsController.swift in Sources */,
 				CEB7901C2802D22F0045FF91 /* AgeRangeCell.swift in Sources */,
 				CE6E274027E34FAA00AD1C73 /* TopNavigationStackView.swift in Sources */,
 				CEC54A0127E87A200070EF09 /* CardViewModel.swift in Sources */,

@@ -8,7 +8,13 @@
 import UIKit
 import SDWebImage
 
+protocol CardViewDelegate: class {
+	func didTapMoreInfo()
+}
+
 class CardView: UIView {
+	
+	weak var delegate: CardViewDelegate?
 	
 	// MARK: - CardViewModel
 	
@@ -49,6 +55,13 @@ class CardView: UIView {
 		label.textColor = .white
 		label.font = .systemFont(ofSize: 22, weight: .heavy)
 		return label
+	}()
+	
+	fileprivate let moreInfoButton: UIButton = {
+		let button = UIButton(type: .system)
+		button.setImage(UIImage(named: "info_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
+		button.addTarget(self, action: #selector(handleTapInfo), for: .touchUpInside)
+		return button
 	}()
 	
 	// Configurations
@@ -111,6 +124,9 @@ class CardView: UIView {
 		
 		addSubview(informationLabel)
 		informationLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 0))
+		
+		addSubview(moreInfoButton)
+		moreInfoButton.anchor(top: nil, leading: nil, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 16, right: 16), size: .init(width: 44, height: 44))
 	}
 	
 	fileprivate func setupBarsStackView() {
@@ -119,6 +135,8 @@ class CardView: UIView {
 		barsStackView.spacing = 4
 		barsStackView.distribution = .fillEqually
 	}
+	
+	// MARK: - Objc fileprivate
 	
 	@objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
 		let tapLocation = gesture.location(in: nil)
@@ -130,6 +148,11 @@ class CardView: UIView {
 			cardViewModel.goToPreviousPhoto()
 		}
 	}
+	
+	@objc fileprivate func handleTapInfo() {
+		self.delegate?.didTapMoreInfo()
+	}
+	
 	// MARK: - Animation
 	@objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {
 		switch gesture.state {

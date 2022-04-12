@@ -14,9 +14,6 @@ class HomeViewController: UIViewController {
 	
 	fileprivate var user: User?
 	
-	var cardViewModel = [CardViewModel]()
-	var lastFetchUser: User?
-	
 	// MARK: UI Components
 	lazy var topStackView = TopNavigationStackView()
 	lazy var bottomControls = HomeBottomsStackView()
@@ -41,11 +38,12 @@ class HomeViewController: UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		print("HomeVC DidAppear")
 		
 		if Auth.auth().currentUser == nil {
 			let loginController = LoginViewController()
 			loginController.delegate = self
+			let registerVC = RegistrationViewController()
+			registerVC.delegate = self
 			let navController = UINavigationController(rootViewController: loginController)
 			navController.modalPresentationStyle = .fullScreen
 			present(navController, animated: true)
@@ -100,21 +98,20 @@ class HomeViewController: UIViewController {
 			snapshot?.documents.forEach({ documentSnapshot in
 				let userDictionary = documentSnapshot.data()
 				let user = User(dictionary: userDictionary)
-				self.cardViewModel.append(user.toCardViewModel())
-				self.lastFetchUser = user
-				self.setupCardFromUser(user: user)
+				if user.uid != Auth.auth().currentUser?.uid {
+					self.setupCardFromUser(user: user)
+				}
 			})
 		}
 	}
 	
 	fileprivate func setupCardFromUser(user: User) {
-		cardViewModel.forEach { cardVM in
 			let cardView = CardView(frame: .zero)
+			cardView.delegate = self
 			cardView.cardViewModel = user.toCardViewModel()
 			cardDeckView.addSubview(cardView)
 			cardDeckView.sendSubviewToBack(cardView)
 			cardView.fillSuperview()
-		}
 	}
 	
 	fileprivate func fetchCurrentUser() {
@@ -142,8 +139,25 @@ extension HomeViewController: SettingsControllerDelegate {
 	}
 }
 
+// MARK: - LoginControllerDelegate
 extension HomeViewController: LoginControllerDelegate {
 	func didFinishLoggingIn() {
 		fetchCurrentUser()
 	}
 }
+
+// MARK: - RegistrationControllerDelegate
+extension HomeViewController: RegistrationControllerDelegate {
+	func didFinishRegister() {
+		fetchCurrentUser()
+	}
+}
+
+// MARK: - CardViewDelegate
+extension HomeViewController: CardViewDelegate {
+	func didTapMoreInfo() {
+		let infoController = UserDetailsController()
+		present(infoController, animated: true)
+	}
+}
+

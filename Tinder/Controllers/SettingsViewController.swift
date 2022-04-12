@@ -81,9 +81,9 @@ class SettingsViewController: UITableViewController {
 			"uid": uid,
 			"profession": user?.profession ?? "",
 			"age": user?.age ?? -100,
-			"imageUrl1": user?.imageUrl1 ?? "",
-			"imageUrl2": user?.imageUrl2 ?? "",
-			"imageUrl3": user?.imageUrl3 ?? "",
+			"imageUrl1": user?.imageUrl1 ?? nil,
+			"imageUrl2": user?.imageUrl2 ?? nil,
+			"imageUrl3": user?.imageUrl3 ?? nil,
 			"minSeekingAge": user?.minSeekingAge ?? -1,
 			"maxSeekingAge": user?.maxSeekingAge ?? -1
 		]

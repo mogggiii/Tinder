@@ -10,9 +10,15 @@ import Firebase
 import FirebaseStorage
 import JGProgressHUD
 
+protocol RegistrationControllerDelegate: class {
+	func didFinishRegister()
+}
+
 class RegistrationViewController: UIViewController {
 	
 	fileprivate let gradientLayer = CAGradientLayer()
+	
+	weak var delegate: RegistrationControllerDelegate?
 	let registrationViewModel = RegistrationViewModel()
 	
 	// MARK: - UI Components
@@ -246,6 +252,9 @@ class RegistrationViewController: UIViewController {
 				self?.showHUDWithError(error: error)
 			}
 			
+			self?.dismiss(animated: true, completion: {
+				self?.delegate?.didFinishRegister()
+			})
 			print("FINISH REGISTER USER")
 		}
 	}
@@ -257,8 +266,8 @@ class RegistrationViewController: UIViewController {
 	}
 	
 	@objc fileprivate func handleGoToLogin() {
-		let loginContoller = LoginViewController()
-		navigationController?.pushViewController(loginContoller, animated: true)
+//		let loginContoller = LoginViewController()
+		navigationController?.popViewController(animated: true)
 	}
 }
 

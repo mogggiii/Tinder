@@ -155,7 +155,9 @@ class LoginViewController: UIViewController {
 	}
 	
 	@objc fileprivate func handleBack() {
-		navigationController?.popViewController(animated: true)
+		let registrationController = RegistrationViewController()
+		
+		navigationController?.pushViewController(registrationController, animated: true)
 	}
 	
 	@objc fileprivate func handleTapDismiss() {
