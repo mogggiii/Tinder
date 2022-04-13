@@ -10,12 +10,15 @@ import SDWebImage
 
 class UserDetailsController: UIViewController {
 	
-	var cardViewModel: CardViewModel! {
+	fileprivate let extaSwipingHeight: CGFloat = 80
+	fileprivate let swipingPhotosController = SwipingPhotosController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+	
+	var cardViewModel: CardViewModel? {
 		didSet {
+			guard let cardViewModel = cardViewModel else { return }
 			infoLabel.attributedText = cardViewModel.attributedString
 			
-			guard let firstImageUrl = cardViewModel.imageUrls.first, let url = URL(string: firstImageUrl) else { return }
-			imageView.sd_setImage(with: url)
+			swipingPhotosController.cardViewModel = cardViewModel
 		}
 	}
 	
@@ -26,14 +29,6 @@ class UserDetailsController: UIViewController {
 		sv.contentInsetAdjustmentBehavior = .never
 		sv.delegate = self
 		return sv
-	}()
-	
-	let imageView: UIImageView = {
-		let iv = UIImageView()
-		iv.image = UIImage(named: "jane1")
-		iv.contentMode = .scaleAspectFill
-		iv.clipsToBounds = true
-		return iv
 	}()
 	
 	let infoLabel: UILabel = {
@@ -67,21 +62,27 @@ class UserDetailsController: UIViewController {
 		view.backgroundColor = .white
 	}
 	
+	override func viewWillLayoutSubviews() {
+		super.viewWillLayoutSubviews()
+		let swipingView = swipingPhotosController.view!
+		swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width + extaSwipingHeight)
+	}
+	
 	// MARK: - Fileprivate Methods
 	fileprivate func setupUI() {
 		view.addSubview(scrollView)
 		scrollView.fillSuperview()
 		
-		scrollView.addSubview(imageView)
+		let swipingView = swipingPhotosController.view!
+		scrollView.addSubview(swipingView)
 		scrollView.addSubview(infoLabel)
 		scrollView.addSubview(dismissButton)
-		imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
 		
 		let padding: CGFloat = 16
 		let dismissButtonSize: CGFloat = 44
 		
-		infoLabel.anchor(top: imageView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: padding, left: padding, bottom: 0, right: padding))
-		dismissButton.anchor(top: imageView.bottomAnchor, leading: nil, bottom: nil, trailing: imageView.trailingAnchor, padding: .init(top: -dismissButtonSize / 2, left: 0, bottom: 0, right: padding), size: .init(width: dismissButtonSize, height: dismissButtonSize))
+		infoLabel.anchor(top: swipingView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: padding, left: padding, bottom: 0, right: padding))
+		dismissButton.anchor(top: swipingView.bottomAnchor, leading: nil, bottom: nil, trailing: swipingView.trailingAnchor, padding: .init(top: -dismissButtonSize / 2, left: 0, bottom: 0, right: padding), size: .init(width: dismissButtonSize, height: dismissButtonSize))
 	}
 	
 	fileprivate func setupBlurView() {
@@ -123,6 +124,7 @@ extension UserDetailsController: UIScrollViewDelegate {
 		let changeY = -scrollView.contentOffset.y
 		var width = view.frame.width + changeY * 2
 		width = max(view.frame.width, width)
-		imageView.frame = CGRect(x: min(0, -changeY), y: min(0, -changeY), width: width, height: width)
+		let imageView = swipingPhotosController.view!
+		imageView.frame = CGRect(x: min(0, -changeY), y: min(0, -changeY), width: width, height: width + extaSwipingHeight)
 	}
 }

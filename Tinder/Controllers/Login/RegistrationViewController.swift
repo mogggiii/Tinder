@@ -89,7 +89,6 @@ class RegistrationViewController: UIViewController {
 	}()
 	
 	// MARK: - Life Cycle
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -121,7 +120,6 @@ class RegistrationViewController: UIViewController {
 	}
 	
 	// MARK: - Fileprivate Methods
-	
 	fileprivate func showHUDWithError(error: Error) {
 		registeringHUD.dismiss()
 		let hud = JGProgressHUD(style: .dark)
@@ -133,7 +131,6 @@ class RegistrationViewController: UIViewController {
 	
 	/// view model observer
 	fileprivate func setupRegistrationViewModelObserver() {
-		
 		registrationViewModel.bindableIsFormValid.bind { [weak self] isFormValid in
 			guard let isFormValid = isFormValid else { return }
 			self?.registerButton.isEnabled = isFormValid
@@ -266,7 +263,7 @@ class RegistrationViewController: UIViewController {
 	}
 	
 	@objc fileprivate func handleGoToLogin() {
-//		let loginContoller = LoginViewController()
+		//		let loginContoller = LoginViewController()
 		navigationController?.popViewController(animated: true)
 	}
 }

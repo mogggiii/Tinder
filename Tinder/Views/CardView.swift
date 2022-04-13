@@ -17,9 +17,9 @@ class CardView: UIView {
 	weak var delegate: CardViewDelegate?
 	
 	// MARK: - CardViewModel
-	
-	var cardViewModel: CardViewModel! {
+	var cardViewModel: CardViewModel? {
 		didSet {
+			guard let cardViewModel = cardViewModel else { return }
 			let imageName = cardViewModel.imageUrls.first ?? ""
 			/// load image using sdwebimage
 			if let url = URL(string: imageName) {
@@ -88,7 +88,7 @@ class CardView: UIView {
 	// MARK: - Fileprivate methods
 	
 	fileprivate func setupImageIndexObserver() {
-		cardViewModel.imageIndexObserver = { [weak self] index, imageUrl in
+		cardViewModel?.imageIndexObserver = { [weak self] index, imageUrl in
 			if let url = URL(string: imageUrl ?? "") {
 				self?.imageView.sd_setImage(with: url)
 			}
@@ -144,14 +144,15 @@ class CardView: UIView {
 		let shouldAdvanceNextPhoto = tapLocation.x > frame.width / 2 ? true : false
 		
 		if shouldAdvanceNextPhoto {
-			cardViewModel.advanceToNextPhoto()
+			cardViewModel?.advanceToNextPhoto()
 		} else {
-			cardViewModel.goToPreviousPhoto()
+			cardViewModel?.goToPreviousPhoto()
 		}
 	}
 	
 	@objc fileprivate func handleTapInfo() {
-		self.delegate?.didTapMoreInfo(self.cardViewModel)
+		guard let cardViewModel = cardViewModel else { return }
+		self.delegate?.didTapMoreInfo(cardViewModel)
 	}
 	
 	// MARK: - Animation

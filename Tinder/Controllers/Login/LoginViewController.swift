@@ -81,7 +81,6 @@ class LoginViewController: UIViewController {
 	}
 	
 	// MARK: - Fileprivate Methods
-	
 	fileprivate func setupLoginViewModel() {
 		loginViewModel.isFormValid.bind { [weak self] isFormValid in
 			guard let isFormValid = isFormValid else { return }
@@ -93,8 +92,8 @@ class LoginViewController: UIViewController {
 			}
 		}
 		
-		loginViewModel.isLoggingIn.bind { [weak self] isRegisterin in
-			if isRegisterin == true {
+		loginViewModel.isLoggingIn.bind { [weak self] isLogginIn in
+			if isLogginIn == true {
 				self?.hud.textLabel.text = "Login"
 				self?.hud.show(in: self!.view)
 			} else {
