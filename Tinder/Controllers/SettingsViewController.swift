@@ -85,7 +85,8 @@ class SettingsViewController: UITableViewController {
 			"imageUrl2": user?.imageUrl2 ?? nil,
 			"imageUrl3": user?.imageUrl3 ?? nil,
 			"minSeekingAge": user?.minSeekingAge ?? -1,
-			"maxSeekingAge": user?.maxSeekingAge ?? -1
+			"maxSeekingAge": user?.maxSeekingAge ?? -1,
+			"bio": user?.bio ?? ""
 		]
 		
 		let hud = JGProgressHUD(style: .dark)
@@ -275,6 +276,7 @@ class SettingsViewController: UITableViewController {
 			}
 		case 3:
 			cell.textField.placeholder = "Enter Bio"
+			cell.textField.text = user?.bio
 		default:
 			print("hello")
 		}
