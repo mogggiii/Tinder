@@ -9,7 +9,10 @@ import UIKit
 
 class SwipingPhotosController: UIPageViewController {
 	
-	var controllers = [UIViewController]()
+	fileprivate let barsStackView = UIStackView(arrangedSubviews: [])
+	fileprivate let deselectBarColor = UIColor(white: 0, alpha: 0.1)
+	fileprivate var controllers = [UIViewController]()
+	fileprivate let isCardViewMode: Bool
 	
 	// MARK: - CardViewModel
 	var cardViewModel: CardViewModel? {
@@ -27,19 +30,37 @@ class SwipingPhotosController: UIPageViewController {
 		}
 	}
 	
-	fileprivate let barsStackView = UIStackView(arrangedSubviews: [])
-	fileprivate let deselectBarColor = UIColor(white: 0, alpha: 0.1)
+	init(isCardViewMode: Bool = false) {
+		self.isCardViewMode = isCardViewMode
+		super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 	
 	// MARK: - VC Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		view.backgroundColor = .white
-		
 		delegate = self
 		dataSource = self
+		
+		if isCardViewMode {
+			disableSwipingAbility()
+			view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+		}
 	}
 	
 	// MARK: Fileprivate Methods
+	fileprivate func disableSwipingAbility() {
+		view.subviews.forEach { view in
+			if let view = view as? UIScrollView {
+				view.isScrollEnabled = false
+			}
+		}
+	}
+	
 	fileprivate func setupBarView() {
 		cardViewModel?.imageUrls.forEach({ _ in
 			let barView = UIView()
@@ -53,10 +74,38 @@ class SwipingPhotosController: UIPageViewController {
 		barsStackView.distribution = .fillEqually
 		view.addSubview(barsStackView)
 		
-		let topPadding = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0 + CGFloat(8)
+		var topPadding: CGFloat = 8
+		
+		if !isCardViewMode {
+			topPadding += view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+		}
+		
 		barsStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: topPadding, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))
 	}
+	
+	// MARK: - Objc fileprivate
+	@objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
+		let currentController = viewControllers!.first!
+		if let index = controllers.firstIndex(of: currentController) {
+			
+			barsStackView.arrangedSubviews.forEach { $0.backgroundColor = deselectBarColor }
+			
+			if gesture.location(in: self.view).x > view.frame.width / 2{
+				let nextIndex = min(index + 1, controllers.count - 1)
+				let nextController = controllers[nextIndex]
+				setViewControllers([nextController], direction: .forward, animated: false)
+				barsStackView.arrangedSubviews[nextIndex].backgroundColor = .white
+			} else {
+				let prevIndex = max(0, index - 1)
+				let prevController = controllers[prevIndex]
+				setViewControllers([prevController], direction: .forward, animated: false)
+				barsStackView.arrangedSubviews[prevIndex].backgroundColor = .white
+			}
+			
+		}
+	}
 }
+
 
 // MARK: - UIPageViewControllerDataSource
 extension SwipingPhotosController: UIPageViewControllerDataSource {
@@ -110,5 +159,6 @@ class PhotoController: UIViewController {
 		view.addSubview(imageView)
 		imageView.fillSuperview()
 		imageView.contentMode = .scaleAspectFill
+		imageView.clipsToBounds = true 
 	}
 }

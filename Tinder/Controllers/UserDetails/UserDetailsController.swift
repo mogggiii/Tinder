@@ -11,7 +11,7 @@ import SDWebImage
 class UserDetailsController: UIViewController {
 	
 	fileprivate let extaSwipingHeight: CGFloat = 80
-	fileprivate let swipingPhotosController = SwipingPhotosController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+	fileprivate let swipingPhotosController = SwipingPhotosController()
 	
 	var cardViewModel: CardViewModel? {
 		didSet {

@@ -78,10 +78,11 @@ class SettingsViewController: UITableViewController {
 	
 	/// Save user settings to Firestore
 	@objc fileprivate func handleSave() {
-		guard let uid = Auth.auth().currentUser?.uid else { return }
+		guard let uid = Auth.auth().currentUser?.uid, let email = Auth.auth().currentUser?.email else { return }
 		let docData: [String: Any] = [
 			"fullName": user?.name ?? "",
 			"uid": uid,
+			"email": email,
 			"profession": user?.profession ?? "",
 			"age": user?.age ?? -100,
 			"imageUrl1": user?.imageUrl1 ?? nil,
