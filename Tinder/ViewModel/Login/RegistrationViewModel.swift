@@ -83,11 +83,14 @@ class RegistrationViewModel {
 	
 	fileprivate func saveInfoToFirestore(imageUrl: String, completion: @escaping (Error?) ->()) {
 		let uid = Auth.auth().currentUser?.uid ?? ""
-		let docData = [
+		let docData: [String: Any] = [
 			"fullName": fullName ?? "",
 			"uid": uid,
 			"email": email ?? "",
-			"imageUrl1": imageUrl
+			"age": 18,
+			"imageUrl1": imageUrl,
+			"minSeekingAge": SettingsViewController.defaultMinSeekingAge,
+			"maxSeekingAge": SettingsViewController.defaultMaxSeekingAge
 		]
 		
 		Firestore.firestore().collection("users").document(uid).setData(docData) { error in
@@ -101,8 +104,8 @@ class RegistrationViewModel {
 		}
 	}
 	
-	fileprivate func checkFormValidity() {
-		let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false
+	func checkFormValidity() {
+		let isFormValid = fullName?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false && bindableImage.value != nil
 		bindableIsFormValid.value = isFormValid
 	}
 }

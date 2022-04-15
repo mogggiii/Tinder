@@ -23,7 +23,7 @@ class CardView: UIView {
 			let imageName = cardViewModel.imageUrls.first ?? ""
 			/// load image using sdwebimage
 			if let url = URL(string: imageName) {
-				imageView.sd_setImage(with: url)
+				imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder"), options: .continueInBackground)
 			}
 			
 			informationLabel.attributedText = cardViewModel.attributedString
@@ -90,7 +90,7 @@ class CardView: UIView {
 	fileprivate func setupImageIndexObserver() {
 		cardViewModel?.imageIndexObserver = { [weak self] index, imageUrl in
 			if let url = URL(string: imageUrl ?? "") {
-				self?.imageView.sd_setImage(with: url)
+				self?.imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "placeholder"), options: .continueInBackground)
 			}
 			
 			self?.barsStackView.arrangedSubviews.forEach { view in

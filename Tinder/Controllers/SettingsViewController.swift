@@ -18,6 +18,9 @@ protocol SettingsControllerDelegate: class {
 
 class SettingsViewController: UITableViewController {
 	
+	static let defaultMinSeekingAge = 18
+	static let defaultMaxSeekingAge = 50
+	
 	weak var delegate: SettingsControllerDelegate?
 	var user: User?
 	
@@ -84,8 +87,8 @@ class SettingsViewController: UITableViewController {
 			"imageUrl1": user?.imageUrl1 ?? nil,
 			"imageUrl2": user?.imageUrl2 ?? nil,
 			"imageUrl3": user?.imageUrl3 ?? nil,
-			"minSeekingAge": user?.minSeekingAge ?? -1,
-			"maxSeekingAge": user?.maxSeekingAge ?? -1,
+			"minSeekingAge": user?.minSeekingAge ?? 18,
+			"maxSeekingAge": user?.maxSeekingAge ?? 50,
 			"bio": user?.bio ?? ""
 		]
 		
@@ -248,12 +251,14 @@ class SettingsViewController: UITableViewController {
 		/// age range cell
 		if indexPath.section == 4 {
 			let ageRangeCell = AgeRangeCell(style: .default, reuseIdentifier: nil)
+			let minAge = user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
+			let maxAge = user?.maxSeekingAge ?? SettingsViewController.defaultMaxSeekingAge
 			ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
 			ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
-			ageRangeCell.minLabel.text = "Min: \(user?.minSeekingAge ?? -1)"
-			ageRangeCell.maxLabel.text = "Max: \(user?.maxSeekingAge ?? -1)"
-			ageRangeCell.minSlider.value = Float(user?.minSeekingAge ?? -1)
-			ageRangeCell.maxSlider.value = Float(user?.maxSeekingAge ?? -1)
+			ageRangeCell.minLabel.text = "Min: \(minAge)"
+			ageRangeCell.maxLabel.text = "Max: \(maxAge)"
+			ageRangeCell.minSlider.value = Float(minAge)
+			ageRangeCell.maxSlider.value = Float(maxAge)
 			return ageRangeCell
 		}
 		

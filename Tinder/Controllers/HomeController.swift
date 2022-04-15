@@ -86,7 +86,9 @@ class HomeViewController: UIViewController {
 		hud.textLabel.text = "Fetching Users..."
 		hud.show(in: view)
 		
-		guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else { return }
+		let minAge = user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
+		let maxAge = user?.maxSeekingAge ?? SettingsViewController.defaultMaxSeekingAge
+		
 		let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
 		query.getDocuments { snapshot, error in
 			hud.dismiss()
