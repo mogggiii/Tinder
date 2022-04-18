@@ -14,6 +14,8 @@ class HomeViewController: UIViewController {
 	
 	fileprivate var user: User?
 	
+	var topCardView: CardView?
+	
 	// MARK: UI Components
 	lazy var topStackView = TopNavigationStackView()
 	lazy var bottomControls = HomeBottomsStackView()
@@ -31,6 +33,8 @@ class HomeViewController: UIViewController {
 		
 		topStackView.settingsButton.addTarget(self, action: #selector(handleSetting), for: .touchUpInside)
 		bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
+		//		bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
+		bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
 		
 		configureUI()
 		fetchCurrentUser()
@@ -60,6 +64,21 @@ class HomeViewController: UIViewController {
 	
 	@objc fileprivate func handleRefresh() {
 		fetchCurrentUser()
+	}
+	
+	@objc fileprivate func handleLike() {
+		UIView.animate(withDuration: 1.0,
+									 delay: 0,
+									 usingSpringWithDamping: 0.6,
+									 initialSpringVelocity: 0.1,
+									 options: .curveEaseOut) {
+			self.topCardView?.frame = CGRect(x: 600, y: 0, width: self.topCardView!.frame.width, height: self.topCardView!.frame.height)
+			let angle = 15 * CGFloat.pi / 180
+			self.topCardView?.transform = CGAffineTransform(rotationAngle: angle)
+		} completion: { _ in
+			self.topCardView?.removeFromSuperview()
+			self.topCardView = self.topCardView?.nextCardView
+		}
 	}
 	
 	// MARK: - Fileprivate methods
@@ -97,23 +116,33 @@ class HomeViewController: UIViewController {
 				return
 			}
 			
+			var previousCardView: CardView?
+			
 			snapshot?.documents.forEach({ documentSnapshot in
 				let userDictionary = documentSnapshot.data()
 				let user = User(dictionary: userDictionary)
 				if user.uid != Auth.auth().currentUser?.uid {
-					self.setupCardFromUser(user: user)
+					let cardView = self.setupCardFromUser(user: user)
+					
+					previousCardView?.nextCardView = cardView
+					previousCardView = cardView
+					
+					if self.topCardView == nil {
+						self.topCardView = cardView
+					}
 				}
 			})
 		}
 	}
 	
-	fileprivate func setupCardFromUser(user: User) {
+	fileprivate func setupCardFromUser(user: User) -> CardView {
 		let cardView = CardView(frame: .zero)
 		cardView.delegate = self
 		cardView.cardViewModel = user.toCardViewModel()
 		cardDeckView.addSubview(cardView)
 		cardDeckView.sendSubviewToBack(cardView)
 		cardView.fillSuperview()
+		return cardView
 	}
 	
 	fileprivate func fetchCurrentUser() {
@@ -162,6 +191,11 @@ extension HomeViewController: CardViewDelegate {
 		infoController.cardViewModel = cardViewModel
 		infoController.modalPresentationStyle = .fullScreen
 		present(infoController, animated: true)
+	}
+	
+	func didRemoveCard(_ cardView: CardView) {
+		self.topCardView?.removeFromSuperview()
+		self.topCardView = self.topCardView?.nextCardView
 	}
 }
 
