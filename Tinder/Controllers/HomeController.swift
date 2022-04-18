@@ -33,7 +33,7 @@ class HomeViewController: UIViewController {
 		
 		topStackView.settingsButton.addTarget(self, action: #selector(handleSetting), for: .touchUpInside)
 		bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
-		//		bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
+				bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
 		bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
 		
 		configureUI()
@@ -67,21 +67,40 @@ class HomeViewController: UIViewController {
 	}
 	
 	@objc fileprivate func handleLike() {
-		UIView.animate(withDuration: 1.0,
-									 delay: 0,
-									 usingSpringWithDamping: 0.6,
-									 initialSpringVelocity: 0.1,
-									 options: .curveEaseOut) {
-			self.topCardView?.frame = CGRect(x: 600, y: 0, width: self.topCardView!.frame.width, height: self.topCardView!.frame.height)
-			let angle = 15 * CGFloat.pi / 180
-			self.topCardView?.transform = CGAffineTransform(rotationAngle: angle)
-		} completion: { _ in
-			self.topCardView?.removeFromSuperview()
-			self.topCardView = self.topCardView?.nextCardView
-		}
+		performSwipeAnimation(translation: 700, angle: 15)
+	}
+	
+	@objc fileprivate func handleDislike() {
+		performSwipeAnimation(translation: -700, angle: -15)
 	}
 	
 	// MARK: - Fileprivate methods
+	fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
+		let duration = 0.4
+		let translationAnimation = CABasicAnimation(keyPath: "position.x")
+		translationAnimation.toValue = translation
+		translationAnimation.duration = duration
+		translationAnimation.fillMode = .forwards
+		translationAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+		translationAnimation.isRemovedOnCompletion = false
+		
+		let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+		rotationAnimation.toValue = angle * CGFloat.pi / 180
+		rotationAnimation.duration = duration
+		
+		let cardView = topCardView
+		topCardView = cardView?.nextCardView
+		
+		CATransaction.setCompletionBlock {
+			cardView?.removeFromSuperview()
+		}
+		
+		cardView?.layer.add(translationAnimation, forKey: "translation")
+		cardView?.layer.add(rotationAnimation, forKey: "rotation")
+		
+		CATransaction.commit()
+	}
+	
 	fileprivate func configureUI() {
 		let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardDeckView, bottomControls])
 		overallStackView.axis = .vertical
@@ -109,6 +128,7 @@ class HomeViewController: UIViewController {
 		let maxAge = user?.maxSeekingAge ?? SettingsViewController.defaultMaxSeekingAge
 		
 		let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
+		topCardView = nil
 		query.getDocuments { snapshot, error in
 			hud.dismiss()
 			if let error = error {
