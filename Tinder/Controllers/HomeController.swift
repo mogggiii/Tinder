@@ -13,6 +13,7 @@ import JGProgressHUD
 class HomeViewController: UIViewController {
 	
 	fileprivate var user: User?
+	fileprivate var swipes = [String: Int]()
 	
 	var topCardView: CardView?
 	
@@ -87,7 +88,7 @@ class HomeViewController: UIViewController {
 		let reference = Firestore.firestore().collection("swipes").document(uid)
 		let documentData = [cardUID: didLike]
 		
-		reference.getDocument { snapshot, error in
+		reference.getDocument { [weak self] snapshot, error in
 			if let error = error {
 				print("Failed to fetch swipe documents", error.localizedDescription)
 			}
@@ -99,13 +100,37 @@ class HomeViewController: UIViewController {
 						return
 					}
 				}
+				
+				self?.chechIfMatchExist(cardUID: cardUID)
 			} else {
 				reference.setData(documentData) { error in
 					if let error = error {
 						print("Failed to save", error.localizedDescription)
 						return
 					}
+					
+					self?.chechIfMatchExist(cardUID: cardUID)
 				}
+			}
+		}
+	}
+	
+	fileprivate func chechIfMatchExist(cardUID: String) {
+		Firestore.firestore().collection("swipes").document(cardUID).getDocument { snapshot, error in
+			if let error = error {
+				print("Failed to fetch document for card user", error)
+				return
+			}
+			
+			guard let data = snapshot?.data(), let uid = Auth.auth().currentUser?.uid else { return }
+			print(data)
+			let hasMatch = data[uid] as? Int == 1
+			if hasMatch {
+				let hud = JGProgressHUD(style: .dark)
+				hud.textLabel.text = "Match"
+				hud.show(in: self.view)
+				hud.dismiss(afterDelay: 3)
+				print("Has Match")
 			}
 		}
 	}
@@ -176,7 +201,11 @@ class HomeViewController: UIViewController {
 			snapshot?.documents.forEach({ documentSnapshot in
 				let userDictionary = documentSnapshot.data()
 				let user = User(dictionary: userDictionary)
-				if user.uid != Auth.auth().currentUser?.uid {
+				
+				/// Setup all card views
+				let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
+				let hasNotSwipesBefore = self.swipes[user.uid!] == nil
+				if isNotCurrentUser && hasNotSwipesBefore {
 					let cardView = self.setupCardFromUser(user: user)
 					
 					previousCardView?.nextCardView = cardView
@@ -214,6 +243,21 @@ class HomeViewController: UIViewController {
 			}
 			
 			self.user = user
+			self.fetchSwipes()
+		}
+	}
+	
+	fileprivate func fetchSwipes() {
+		guard let uid = Auth.auth().currentUser?.uid else { return }
+		Firestore.firestore().collection("swipes").document(uid).getDocument { snapshot, error in
+			if let error = error {
+				print("Failed to frych swipes", error)
+				return
+			}
+			
+			print(snapshot?.data() ?? "")
+			guard let data = snapshot?.data() as? [String: Int] else { return }
+			self.swipes = data
 			self.fetchUsersFromFirestore()
 		}
 	}
