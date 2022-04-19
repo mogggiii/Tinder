@@ -33,7 +33,7 @@ class HomeViewController: UIViewController {
 		
 		topStackView.settingsButton.addTarget(self, action: #selector(handleSetting), for: .touchUpInside)
 		bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
-				bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
+		bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
 		bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
 		
 		configureUI()
@@ -53,7 +53,7 @@ class HomeViewController: UIViewController {
 			present(navController, animated: true)
 		}
 	}
-	// MARK: - Fileprivate methods objc
+	// MARK: - Objc methods
 	@objc fileprivate func handleSetting() {
 		let settingsController = SettingsViewController()
 		settingsController.delegate = self
@@ -67,14 +67,49 @@ class HomeViewController: UIViewController {
 	}
 	
 	@objc fileprivate func handleLike() {
+		saveSwipeToFirestore(didLike: 1)
 		performSwipeAnimation(translation: 700, angle: 15)
 	}
 	
 	@objc fileprivate func handleDislike() {
+		saveSwipeToFirestore(didLike: 0)
 		performSwipeAnimation(translation: -700, angle: -15)
 	}
 	
 	// MARK: - Fileprivate methods
+	
+	/// Saving swipes to firestore
+	/// if didLike == 0, user press dislike button
+	/// else user press like button
+	fileprivate func saveSwipeToFirestore(didLike: Int) {
+		guard let uid = Auth.auth().currentUser?.uid, let cardUID = topCardView?.cardViewModel?.uid else { return }
+		
+		let reference = Firestore.firestore().collection("swipes").document(uid)
+		let documentData = [cardUID: didLike]
+		
+		reference.getDocument { snapshot, error in
+			if let error = error {
+				print("Failed to fetch swipe documents", error.localizedDescription)
+			}
+			
+			if snapshot?.exists == true {
+				reference.updateData(documentData) { error in
+					if let error = error {
+						print("Failed to save", error.localizedDescription)
+						return
+					}
+				}
+			} else {
+				reference.setData(documentData) { error in
+					if let error = error {
+						print("Failed to save", error.localizedDescription)
+						return
+					}
+				}
+			}
+		}
+	}
+	
 	fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
 		let duration = 0.4
 		let translationAnimation = CABasicAnimation(keyPath: "position.x")
@@ -155,6 +190,7 @@ class HomeViewController: UIViewController {
 		}
 	}
 	
+	/// Setup card from user
 	fileprivate func setupCardFromUser(user: User) -> CardView {
 		let cardView = CardView(frame: .zero)
 		cardView.delegate = self
@@ -216,6 +252,14 @@ extension HomeViewController: CardViewDelegate {
 	func didRemoveCard(_ cardView: CardView) {
 		self.topCardView?.removeFromSuperview()
 		self.topCardView = self.topCardView?.nextCardView
+	}
+	
+	func didLike() {
+		handleLike()
+	}
+	
+	func didDislike() {
+		handleDislike()
 	}
 }
 
