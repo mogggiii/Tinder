@@ -9,7 +9,24 @@ import UIKit
 
 class MatchView: UIView {
 	
+	// MARK: - UI Componets
 	fileprivate let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+	
+	fileprivate let itsAMatchImageView: UIImageView = {
+		let imageView = UIImageView(image: UIImage(named: "itsamatch"))
+		imageView.contentMode = .scaleAspectFit
+		return imageView
+	}()
+	
+	fileprivate let descriptionLabel: UILabel = {
+		let label = UILabel()
+		label.text = "You and Joe have liked\neach other"
+		label.textAlignment = .center
+		label.textColor = .white
+		label.font = .systemFont(ofSize: 20)
+		label.numberOfLines = 0
+		return label
+	}()
 	
 	fileprivate let currentUserImageView: UIImageView = {
 		let imageView = UIImageView(image: UIImage(named: "jane1"))
@@ -29,11 +46,24 @@ class MatchView: UIView {
 		return imageView
 	}()
 	
+	fileprivate let sendMessageButton: UIButton = {
+		let button = SendMessageButton(type: .system)
+		button.setTitle("SEND MESSAGE", for: .normal)
+		button.setTitleColor(.white, for: .normal)
+		return button
+	}()
+	
+	fileprivate let keepSwipingButton: UIButton = {
+		let button = KeepSwipingButton(type: .system)
+		button.setTitle("Keep Swiping", for: .normal)
+		button.setTitleColor(.white, for: .normal)
+		return button
+	}()
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		
 		setupBlurView()
-		
 		setupLayout()
 	}
 	
@@ -41,6 +71,7 @@ class MatchView: UIView {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	// MARK: - Fileprivate Methods
 	fileprivate func setupBlurView() {
 		visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
 		
@@ -55,27 +86,41 @@ class MatchView: UIView {
 									 options: .curveEaseOut) {
 			self.visualEffectView.alpha = 1
 		} completion: { _ in
-			
 		}
-
 	}
 	
 	fileprivate func setupLayout() {
+		addSubview(itsAMatchImageView)
+		addSubview(descriptionLabel)
 		addSubview(currentUserImageView)
 		addSubview(cardUserImageView)
+		addSubview(sendMessageButton)
+		addSubview(keepSwipingButton)
 		
 		let imageViewSize: CGFloat = 140
-		let padding: CGFloat = 16
+		let imageViewPadding: CGFloat = 16
+		let buttonSize: CGFloat = 55
 		
-		currentUserImageView.anchor(top: nil, leading: nil, bottom: nil, trailing: centerXAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: padding), size: .init(width: imageViewSize, height: imageViewSize))
+		itsAMatchImageView.anchor(top: nil, leading: nil, bottom: descriptionLabel.topAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 16, right: 0), size: .init(width: 300, height: 80))
+		itsAMatchImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+		
+		descriptionLabel.anchor(top: nil, leading: self.leadingAnchor, bottom: currentUserImageView.topAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 32, right: 0), size: .init(width: 0, height: 50))
+		
+		currentUserImageView.anchor(top: nil, leading: nil, bottom: nil, trailing: centerXAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: imageViewPadding), size: .init(width: imageViewSize, height: imageViewSize))
 		currentUserImageView.layer.cornerRadius = imageViewSize / 2
 		currentUserImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
 		
-		cardUserImageView.anchor(top: nil, leading: centerXAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: padding, bottom: 0, right: 0), size: .init(width: imageViewSize, height: imageViewSize))
+		cardUserImageView.anchor(top: nil, leading: centerXAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: imageViewPadding, bottom: 0, right: 0), size: .init(width: imageViewSize, height: imageViewSize))
 		cardUserImageView.layer.cornerRadius = imageViewSize / 2
 		cardUserImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+		
+		sendMessageButton.anchor(top: currentUserImageView.bottomAnchor, leading: self.leadingAnchor, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 32, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: buttonSize))
+		
+		keepSwipingButton.anchor(top: sendMessageButton.bottomAnchor, leading: self.leadingAnchor, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 16, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: buttonSize))
+		keepSwipingButton.layer.cornerRadius = buttonSize / 2
 	}
 	
+	// MARK: - Objc fileprivate methods
 	@objc fileprivate func handleTapDismiss() {
 		UIView.animate(withDuration: 0.5,
 									 delay: 0,

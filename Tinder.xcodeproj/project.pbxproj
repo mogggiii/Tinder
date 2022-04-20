@@ -12,6 +12,8 @@
 		CE0104C427E1E74600C79BD6 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0104C327E1E74600C79BD6 /* HomeController.swift */; };
 		CE0104C927E1E74C00C79BD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE0104C827E1E74C00C79BD6 /* Assets.xcassets */; };
 		CE0104CC27E1E74C00C79BD6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0104CA27E1E74C00C79BD6 /* LaunchScreen.storyboard */; };
+		CE1312F42810050000A2CC7D /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1312F3281004FF00A2CC7D /* SendMessageButton.swift */; };
+		CE1312F6281009B100A2CC7D /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1312F5281009B100A2CC7D /* KeepSwipingButton.swift */; };
 		CE2ED06A27EF787600AC74DF /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2ED06927EF787600AC74DF /* Advertiser.swift */; };
 		CE586DB327F9803A00B4FEE5 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE586DB227F9803A00B4FEE5 /* RegistrationViewModel.swift */; };
 		CE66641A27F9A6090087CD4A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE66641927F9A6090087CD4A /* GoogleService-Info.plist */; };
@@ -47,6 +49,8 @@
 		CE0104C827E1E74C00C79BD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE0104CB27E1E74C00C79BD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE0104CD27E1E74C00C79BD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE1312F3281004FF00A2CC7D /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
+		CE1312F5281009B100A2CC7D /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		CE2ED06927EF787600AC74DF /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
 		CE586DB227F9803A00B4FEE5 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		CE66641927F9A6090087CD4A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -136,6 +140,8 @@
 				CE0104CA27E1E74C00C79BD6 /* LaunchScreen.storyboard */,
 				CEDF9D6027F8BEAA007C714C /* CustomTextField.swift */,
 				CE67ADE3280ECA4500C05C10 /* MatchView.swift */,
+				CE1312F3281004FF00A2CC7D /* SendMessageButton.swift */,
+				CE1312F5281009B100A2CC7D /* KeepSwipingButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -353,6 +359,7 @@
 				CE0104C427E1E74600C79BD6 /* HomeController.swift in Sources */,
 				CE6E273E27E348C300AD1C73 /* HomeBottomsStackView.swift in Sources */,
 				CEA76E732806B98F00D15B27 /* SwipingPhotosController.swift in Sources */,
+				CE1312F42810050000A2CC7D /* SendMessageButton.swift in Sources */,
 				CE7330E2280029C20019DAD2 /* SettingsCell.swift in Sources */,
 				CE586DB327F9803A00B4FEE5 /* RegistrationViewModel.swift in Sources */,
 				CE2ED06A27EF787600AC74DF /* Advertiser.swift in Sources */,
@@ -370,6 +377,7 @@
 				CE0104C027E1E74600C79BD6 /* AppDelegate.swift in Sources */,
 				CE0104C227E1E74600C79BD6 /* SceneDelegate.swift in Sources */,
 				CEC86E6727E4A97700C72C6E /* User .swift in Sources */,
+				CE1312F6281009B100A2CC7D /* KeepSwipingButton.swift in Sources */,
 				CE6E274327E3647200AD1C73 /* CardView.swift in Sources */,
 				CE6E273A27E1F4F400AD1C73 /* UIColor + Extension.swift in Sources */,
 				CEB7902328043DDD0045FF91 /* LoginViewModel.swift in Sources */,
