@@ -6,8 +6,42 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class MatchView: UIView {
+	
+	var currentUser: User? {
+		didSet {
+			
+		}
+	}
+	
+	var cardUID: String? {
+		didSet {
+			guard let cardUID = cardUID else { return }
+			let reference = Firestore.firestore().collection("users")
+			
+			reference.document(cardUID).getDocument { snapshot, error in
+				if let error = error {
+					print("Failed to fetch card user", error)
+					return
+				}
+				
+				guard let dictionary = snapshot?.data() else { return }
+				let user = User(dictionary: dictionary)
+				guard let url = URL(string: user.imageUrl1 ?? "") else { return }
+				
+				guard let currentUser = self.currentUser, let currentUserImageUrl = URL(string: currentUser.imageUrl1 ?? "") else { return }
+				self.currentUserImageView.sd_setImage(with: currentUserImageUrl)
+				
+				self.cardUserImageView.sd_setImage(with: url)
+				self.setupAnimations()
+				
+				self.descriptionLabel.text = "You and \(user.name ?? "No Name") have liked\neach other"
+			}
+		}
+	}
+	
 	
 	// MARK: - UI Componets
 	fileprivate let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -20,7 +54,6 @@ class MatchView: UIView {
 	
 	fileprivate let descriptionLabel: UILabel = {
 		let label = UILabel()
-		label.text = "You and Joe have liked\neach other"
 		label.textAlignment = .center
 		label.textColor = .white
 		label.font = .systemFont(ofSize: 20)
@@ -29,7 +62,7 @@ class MatchView: UIView {
 	}()
 	
 	fileprivate let currentUserImageView: UIImageView = {
-		let imageView = UIImageView(image: UIImage(named: "jane1"))
+		let imageView = UIImageView()
 		imageView.contentMode = .scaleAspectFill
 		imageView.clipsToBounds = true
 		imageView.layer.borderWidth = 2
@@ -38,7 +71,8 @@ class MatchView: UIView {
 	}()
 	
 	fileprivate let cardUserImageView: UIImageView = {
-		let imageView = UIImageView(image: UIImage(named: "jane3"))
+		let imageView = UIImageView()
+		imageView.alpha = 0
 		imageView.contentMode = .scaleAspectFill
 		imageView.clipsToBounds = true
 		imageView.layer.borderWidth = 2
@@ -60,12 +94,20 @@ class MatchView: UIView {
 		return button
 	}()
 	
+	lazy var views = [
+		itsAMatchImageView,
+		descriptionLabel,
+		currentUserImageView,
+		cardUserImageView,
+		sendMessageButton,
+		keepSwipingButton
+	]
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		
 		setupBlurView()
 		setupLayout()
-		setupAnimations()
 	}
 	
 	required init?(coder: NSCoder) {
@@ -74,6 +116,8 @@ class MatchView: UIView {
 	
 	// MARK: - Fileprivate Methods
 	fileprivate func setupAnimations() {
+		views.forEach { $0.alpha = 1 }
+		
 		let angle = 30 * CGFloat.pi / 180
 		
 		currentUserImageView.transform = CGAffineTransform(rotationAngle: -angle).concatenating(CGAffineTransform(translationX: 200, y: 0))
@@ -123,12 +167,10 @@ class MatchView: UIView {
 	}
 	
 	fileprivate func setupLayout() {
-		addSubview(itsAMatchImageView)
-		addSubview(descriptionLabel)
-		addSubview(currentUserImageView)
-		addSubview(cardUserImageView)
-		addSubview(sendMessageButton)
-		addSubview(keepSwipingButton)
+		views.forEach { view in
+			addSubview(view)
+			view.alpha = 0
+		}
 		
 		let imageViewSize: CGFloat = 140
 		let imageViewPadding: CGFloat = 16
