@@ -17,4 +17,6 @@ target 'Tinder' do
   # ProgressHud
   pod 'JGProgressHUD'
 
+  pod 'LBTATools' 
+
 end

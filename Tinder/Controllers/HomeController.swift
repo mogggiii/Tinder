@@ -30,9 +30,11 @@ class HomeViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		navigationController?.navigationBar.isHidden = true
 		view.backgroundColor = .white
 		
 		topStackView.settingsButton.addTarget(self, action: #selector(handleSetting), for: .touchUpInside)
+		topStackView.messagesButton.addTarget(self, action: #selector(handleMessage), for: .touchUpInside)
 		bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
 		bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
 		bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
@@ -78,6 +80,10 @@ class HomeViewController: UIViewController {
 		performSwipeAnimation(translation: -700, angle: -15)
 	}
 	
+	@objc fileprivate func handleMessage() {
+		let vc = MatchesMessagesController(collectionViewLayout: UICollectionViewFlowLayout())
+		navigationController?.pushViewController(vc, animated: true)
+	}
 	// MARK: - Fileprivate methods
 	
 	/// Saving swipes to firestore
