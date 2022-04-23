@@ -14,8 +14,9 @@
 		CE0104CC27E1E74C00C79BD6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0104CA27E1E74C00C79BD6 /* LaunchScreen.storyboard */; };
 		CE1312F42810050000A2CC7D /* SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1312F3281004FF00A2CC7D /* SendMessageButton.swift */; };
 		CE1312F6281009B100A2CC7D /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1312F5281009B100A2CC7D /* KeepSwipingButton.swift */; };
+		CE1A5F4C281441CB004569CB /* MatchesMessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5F4B281441CB004569CB /* MatchesMessagesController.swift */; };
+		CE1A5F4E28144306004569CB /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1A5F4D28144306004569CB /* Match.swift */; };
 		CE2ED06A27EF787600AC74DF /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2ED06927EF787600AC74DF /* Advertiser.swift */; };
-		CE442A382812CBB8004E105C /* MatchesMessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE442A372812CBB8004E105C /* MatchesMessagesController.swift */; };
 		CE586DB327F9803A00B4FEE5 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE586DB227F9803A00B4FEE5 /* RegistrationViewModel.swift */; };
 		CE66641A27F9A6090087CD4A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE66641927F9A6090087CD4A /* GoogleService-Info.plist */; };
 		CE67ADE4280ECA4600C05C10 /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE67ADE3280ECA4500C05C10 /* MatchView.swift */; };
@@ -53,8 +54,9 @@
 		CE0104CD27E1E74C00C79BD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE1312F3281004FF00A2CC7D /* SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageButton.swift; sourceTree = "<group>"; };
 		CE1312F5281009B100A2CC7D /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
+		CE1A5F4B281441CB004569CB /* MatchesMessagesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesMessagesController.swift; sourceTree = "<group>"; };
+		CE1A5F4D28144306004569CB /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
 		CE2ED06927EF787600AC74DF /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
-		CE442A372812CBB8004E105C /* MatchesMessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MatchesMessagesController.swift; path = ../../../../CryptoCoin/CryptoCoin/Crypto/MatchesMessagesController.swift; sourceTree = "<group>"; };
 		CE586DB227F9803A00B4FEE5 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		CE66641927F9A6090087CD4A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CE67ADE3280ECA4500C05C10 /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
@@ -136,7 +138,7 @@
 		CE442A362812CB8D004E105C /* Matches */ = {
 			isa = PBXGroup;
 			children = (
-				CE442A372812CBB8004E105C /* MatchesMessagesController.swift */,
+				CE1A5F4B281441CB004569CB /* MatchesMessagesController.swift */,
 			);
 			path = Matches;
 			sourceTree = "<group>";
@@ -257,6 +259,7 @@
 			children = (
 				CEC86E6627E4A97700C72C6E /* User .swift */,
 				CE2ED06927EF787600AC74DF /* Advertiser.swift */,
+				CE1A5F4D28144306004569CB /* Match.swift */,
 			);
 			path = "Model ";
 			sourceTree = "<group>";
@@ -390,15 +393,16 @@
 				CE6E273E27E348C300AD1C73 /* HomeBottomsStackView.swift in Sources */,
 				CEA76E732806B98F00D15B27 /* SwipingPhotosController.swift in Sources */,
 				CE1312F42810050000A2CC7D /* SendMessageButton.swift in Sources */,
-				CE442A382812CBB8004E105C /* MatchesMessagesController.swift in Sources */,
 				CE7330E2280029C20019DAD2 /* SettingsCell.swift in Sources */,
 				CE586DB327F9803A00B4FEE5 /* RegistrationViewModel.swift in Sources */,
 				CE2ED06A27EF787600AC74DF /* Advertiser.swift in Sources */,
 				CE8D03EA27FC1C730069E009 /* Bindable.swift in Sources */,
+				CE1A5F4E28144306004569CB /* Match.swift in Sources */,
 				CEB7902128043B950045FF91 /* LoginViewController.swift in Sources */,
 				CE847F43281303E300D82FCC /* MatchCell.swift in Sources */,
 				CE67ADE4280ECA4600C05C10 /* MatchView.swift in Sources */,
 				CEB7901E280413CA0045FF91 /* Firebase + Extensions.swift in Sources */,
+				CE1A5F4C281441CB004569CB /* MatchesMessagesController.swift in Sources */,
 				CEAC663127FF088500B0ECCD /* SettingsViewController.swift in Sources */,
 				CE847F402812F93100D82FCC /* MatchesNavBar.swift in Sources */,
 				CEC63F89280565BD00E850E6 /* UserDetailsController.swift in Sources */,

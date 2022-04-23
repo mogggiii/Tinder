@@ -8,7 +8,7 @@
 import UIKit
 import LBTATools
 
-class MatchCell: LBTAListCell<UIColor> {
+class MatchCell: LBTAListCell<Match> {
 	
 	let profileImageView: UIImageView = {
 		let iv = UIImageView(image: UIImage(named: "jane1"))
@@ -31,9 +31,10 @@ class MatchCell: LBTAListCell<UIColor> {
 		return label
 	}()
 	
-	override var item: UIColor! {
+	override var item: Match! {
 		didSet {
-			backgroundColor = item
+			userNameLabel.text = item.name
+			profileImageView.sd_setImage(with: URL(string: item.profileImageUrl))
 		}
 	}
 	
