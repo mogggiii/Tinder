@@ -17,7 +17,7 @@ class MatchesNavBar: UIView {
 		super.init(frame: frame)
 		
 		backgroundColor = .white
-		navBarSetup()
+		configureNavBar()
 	}
 	
 	required init?(coder: NSCoder) {
@@ -25,7 +25,7 @@ class MatchesNavBar: UIView {
 	}
 	
 	// MARK: - Fileprivate methods
-	fileprivate func navBarSetup() {
+	fileprivate func configureNavBar() {
 		let iconImageView = UIImageView(image: UIImage(named: "top_messages_icon")?.withRenderingMode(.alwaysTemplate), contentMode: .scaleAspectFit)
 		iconImageView.tintColor = UIColor(red: 255 / 255, green: 108 / 255, blue: 112 / 255, alpha: 1)
 		

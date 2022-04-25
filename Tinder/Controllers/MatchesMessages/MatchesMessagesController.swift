@@ -12,16 +12,10 @@ import FirebaseFirestore
 
 class MatchesMessagesController: LBTAListController<MatchCell, Match>, UICollectionViewDelegateFlowLayout {
 	
-	let customNavBar = MatchesNavBar()
+	fileprivate let customNavBar = MatchesNavBar()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		//		items = [
-		//			.init(name: "test1", profileImageUrl: "https://firebasestorage.googleapis.com:443/v0/b/tinder-9e364.appspot.com/o/images%2F78B4E03A-EB79-48FF-853F-4986FE1E0604?alt=media&token=48750fa0-6d51-4ea2-8acb-625f19cbebe5"),
-		//			.init(name: "test2", profileImageUrl: "https://firebasestorage.googleapis.com:443/v0/b/tinder-9e364.appspot.com/o/images%2F78B4E03A-EB79-48FF-853F-4986FE1E0604?alt=media&token=48750fa0-6d51-4ea2-8acb-625f19cbebe5"),
-		//			.init(name: "test3", profileImageUrl: "profileImage url")
-		//		]
 		
 		customNavBar.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
 		
@@ -36,6 +30,12 @@ class MatchesMessagesController: LBTAListController<MatchCell, Match>, UICollect
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 		return .init(top: 16, left: 0, bottom: 16, right: 0)
+	}
+	
+	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		let match = items[indexPath.item]
+		let chatLogController = ChatLogController(match: match)
+		navigationController?.pushViewController(chatLogController, animated: true)
 	}
 	
 	fileprivate func configureCollectionView() {
