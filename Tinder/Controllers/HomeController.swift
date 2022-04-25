@@ -14,6 +14,7 @@ class HomeViewController: UIViewController {
 	
 	fileprivate var user: User?
 	fileprivate var swipes = [String: Int]()
+	fileprivate var users = [String: User]()
 	
 	var topCardView: CardView?
 	
@@ -137,7 +138,39 @@ class HomeViewController: UIViewController {
 			print(data)
 			let hasMatch = data[uid] as? Int == 1
 			if hasMatch {
+				print("Has Matches")
 				self.presentMatchView(cardUID: cardUID)
+				
+				/// Save matches info in matches_messages collection
+				guard let cardUser = self.users[cardUID] else { return }
+				
+				let data: [String: Any] = [
+					"name": cardUser.name ?? "",
+					"profileImageUrl": cardUser.imageUrl1 ?? "",
+					"uid": cardUID,
+					"timestamp": Timestamp(date: Date())
+				]
+				
+				Firestore.firestore().collection("matches_messages").document(uid).collection("matches").document(cardUID).setData(data) { error in
+					if let error = error {
+						print("Failed to save matches_messages", error)
+					}
+				}
+				
+				guard let currentUser = self.user else { return }
+				
+				let currentUserData: [String: Any] = [
+					"name": currentUser.name ?? "",
+					"profileImageUrl": currentUser.imageUrl1 ?? "",
+					"uid": cardUID,
+					"timestamp": Timestamp(date: Date())
+				]
+				
+				Firestore.firestore().collection("matches_messages").document(cardUID).collection("matches").document(uid).setData(currentUserData) { error in
+					if let error = error {
+						print("Failed to save matches_messages", error)
+					}
+				}
 			}
 		}
 	}
@@ -202,7 +235,7 @@ class HomeViewController: UIViewController {
 		let minAge = user?.minSeekingAge ?? SettingsViewController.defaultMinSeekingAge
 		let maxAge = user?.maxSeekingAge ?? SettingsViewController.defaultMaxSeekingAge
 		
-		let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
+		let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge).limit(to: 10)
 		topCardView = nil
 		query.getDocuments { snapshot, error in
 			hud.dismiss()
@@ -218,10 +251,9 @@ class HomeViewController: UIViewController {
 				let userDictionary = documentSnapshot.data()
 				let user = User(dictionary: userDictionary)
 				
+				self.users[user.uid ?? ""] = user
 				/// Setup all card views
 				let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
-//				let hasNotSwipesBefore = self.swipes[user.uid!] == nil
-				
 				let hasNotSwipesBefore = true
 				if isNotCurrentUser && hasNotSwipesBefore {
 					let cardView = self.setupCardFromUser(user: user)
