@@ -28,16 +28,14 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
 		super.viewDidLoad()
 		
 		items = [
-			.init(text: "HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO"),
-			.init(text: "HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO"),
-			.init(text: "HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO"),
+			.init(text: "HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO", isFromCurrentLoggedUser: true),
+			.init(text: "HELLO", isFromCurrentLoggedUser: false),
+			.init(text: "HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO HELLO", isFromCurrentLoggedUser: true),
 		]
 		
 		customNavBar.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
 		
-		collectionView.contentInset.top = navBarHeight
-		collectionView.backgroundColor = .white
-		
+		collectionViewConfigure()
 		setupNavBar()
 	}
 	
@@ -47,7 +45,13 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return .init(width: view.frame.width, height: 140)
+		let estimatedSiezCell = MessageCell(frame: .init(x: 0, y: 0, width: view.frame.width, height: 1000))
+		estimatedSiezCell.item = self.items[indexPath.item]
+		estimatedSiezCell.layoutIfNeeded()
+		
+		let estimatedSize = estimatedSiezCell.systemLayoutSizeFitting(.init(width: view.frame.width, height: 1000))
+		
+		return .init(width: view.frame.width, height: estimatedSize.height)
 	}
 	
 	// MARK: - Fileprivate methods
@@ -55,6 +59,18 @@ class ChatLogController: LBTAListController<MessageCell, Message>, UICollectionV
 		view.addSubview(customNavBar)
 		
 		customNavBar.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, size: .init(width: 0, height: navBarHeight))
+		
+		let statusBarCover = UIView(backgroundColor: .white)
+		view.addSubview(statusBarCover)
+		
+		statusBarCover.anchor(top: view.topAnchor,  leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor)
+	}
+	
+	fileprivate func collectionViewConfigure() {
+		collectionView.contentInset.top = navBarHeight
+		collectionView.verticalScrollIndicatorInsets.top = navBarHeight
+		collectionView.alwaysBounceVertical = true
+		collectionView.backgroundColor = .white
 	}
 	
 	// MARK: - Objc fileprivate methods

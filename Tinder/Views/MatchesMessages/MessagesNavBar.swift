@@ -28,7 +28,7 @@ class MessagesNavBar: UIView {
 	}()
 	
 	let backButton: UIButton = {
-		let button = UIButton()
+		let button = UIButton(type: .system)
 		button.setImage(UIImage(named: "back")?.withRenderingMode(.alwaysTemplate) ?? UIImage(), for: .normal)
 		button.tintColor = UIColor(red: 255 / 255, green: 94 / 255, blue: 94 / 255, alpha: 1)
 		return button
